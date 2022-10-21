@@ -5,6 +5,7 @@
 #include "Flood.h"
 #include "constants.h"
 #include "useragents.h"
+#include "ProxyManager.h"
 
 using std::to_string;
 

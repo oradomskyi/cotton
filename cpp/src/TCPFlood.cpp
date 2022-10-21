@@ -9,15 +9,8 @@ TCPFlood::TCPFlood(string address, uint16_t port)
 	// TODO: find out parsing similar to Python's YARL
 	// compile default header
 	
-	// TODO: this rnd is damn slow, find a better implementation
-	
-	// this one is not thread safe and have to bve called only once at the beginning of a program
-	// srand(time(0)); // init seed
-	
-	string ip = to_string(rand()%255)+'.'
-		+ to_string(rand()%255)+'.'
-		+ to_string(rand()%255)+'.'
-		+ to_string(rand()%255); //   ip: str = Tools.rand_ipv4()
+	ProxyManager* proxyManager = ProxyManager::getInstance();
+	string ip = proxyManager->getRandomIPv4(); //   ip: str = Tools.rand_ipv4()
     
     string origin = "111.222.333.444"; //    origin = str(self._url.origin())
     string raw_authority = "111.111.111.111"; // self._url.raw_authority
