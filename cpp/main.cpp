@@ -6,15 +6,9 @@ using std::string;
 using std::cout;
 using std::endl;
 
-int main()
+void test_attacker()
 {
-	/*
-	string url = "1.2.3.4";
-	uint16_t port = 1234;
-	Target t(url, port);
-	std::cout <<  t.getAddress() << ":" << t.getPort();
-	*/
-	
+	cout << endl;
 	MethodGET attacker(string("1.2.3.4"), 5678);
 	
 	cout <<  "target=" << attacker.getTarget()->getAddress() 
@@ -34,5 +28,19 @@ int main()
 	
 	cout <<" called stop(), state=" << attacker.getState() << endl;
 	
+}
+
+int main()
+{
+	/*
+	string url = "1.2.3.4";
+	uint16_t port = 1234;
+	Target t(url, port);
+	std::cout <<  t.getAddress() << ":" << t.getPort();
+	*/
+
+	test_attacker();
+	test_attacker();
+	test_attacker();
 	return 0;
 }
