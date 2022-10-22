@@ -1,5 +1,5 @@
-#ifndef CONSTANTS_H
-#define CONSTANTS_H
+#ifndef WORKER_CONSTANTS_H
+#define WORKER_CONSTANTS_H
 
 #include <vector>
 #include <unordered_map>

@@ -10,10 +10,9 @@ protected:
 	const Proxy* proxyPtr;
 public:
 	Target(string address, uint16_t port);
-	~Target()
-	{};
+	~Target();
 	
-	const Proxy* getProxyPtr() const { return this->proxyPtr; };
+	const Proxy* getProxyPtr() const;
 	void updateProxy();
 	void updateProxy(const Proxy& proxy);
 };
