@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-#include "../../worker/include/methods/allmethods.h"
+#include "../../flood/include/methods/allmethods.h"
 
 using std::string;
 using std::cout;
