@@ -32,6 +32,7 @@ static const unordered_map<RequestType, string> RequestTypeStr = {
 };
 
 static const string rn = "\\r\\n";
+
 // several methods are using custom values for 'User-Agent' and 'Content-Length'
 // so there is a chance I will have to switch to a unordered_map<string, string>
 static const string TCPHeaderBase = 

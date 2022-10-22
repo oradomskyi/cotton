@@ -7,13 +7,15 @@
 class Target : public IPPort
 {
 protected:
-	Proxy*  proxy;
+	const Proxy* proxyPtr;
 public:
 	Target(string address, uint16_t port);
+	~Target()
+	{};
 	
-	Proxy* getProxy();
+	const Proxy* getProxyPtr() const { return this->proxyPtr; };
 	void updateProxy();
-	void UpdateProxy(string url);
+	void updateProxy(const Proxy& proxy);
 };
 
 #endif

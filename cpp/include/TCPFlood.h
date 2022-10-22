@@ -7,8 +7,6 @@
 #include "useragents.h"
 #include "ProxyManager.h"
 
-using std::to_string;
-
 class TCPFlood : public Flood
 {
 protected:

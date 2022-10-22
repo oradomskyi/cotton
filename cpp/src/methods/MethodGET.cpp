@@ -9,6 +9,8 @@ MethodGET::MethodGET(string address, uint16_t port)
 	
 	this->createRequest(this->requestType, requestRawPathQS, requestBody);
 	
+	this->getTarget()->updateProxy(ProxyManager::getInstance()->getRandomProxy());
+	
 	this->setState(FloodState::READY);
 }
 	

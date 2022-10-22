@@ -10,7 +10,7 @@ protected:
 	Target target;
 public:
 	Flood(string address, uint16_t port);
-	Target* getTarget();
+	Target* getTarget(); // let's keep it modifyable to change it's proxy
 };
 
 #endif

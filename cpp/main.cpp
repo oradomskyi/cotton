@@ -6,14 +6,24 @@ using std::string;
 using std::cout;
 using std::endl;
 
-void test_attacker()
+void test_memory_create_destroy()
+{
+	for(int i = 0; i < 1000000; i++)
+	{
+		MethodGET attacker(string("1.2.3.4"), 5678);
+		attacker.start();
+		attacker.stop();
+	}
+}
+
+void test_init_attacker()
 {
 	cout << endl;
 	MethodGET attacker(string("1.2.3.4"), 5678);
 	
 	cout <<  "target=" << attacker.getTarget()->getAddress() 
 		<< ":" << attacker.getTarget()->getPort() 
-		<< " proxy="<< attacker.getTarget()->getProxy()->getAddress() << ":"<< attacker.getTarget()->getProxy()->getPort()
+		<< " proxy="<< attacker.getTarget()->getProxyPtr()->getAddress() << ":"<< attacker.getTarget()->getProxyPtr()->getPort()
 		<<" attacker state=" << attacker.getState()
 		<< endl;
 		
@@ -32,15 +42,7 @@ void test_attacker()
 
 int main()
 {
-	/*
-	string url = "1.2.3.4";
-	uint16_t port = 1234;
-	Target t(url, port);
-	std::cout <<  t.getAddress() << ":" << t.getPort();
-	*/
+	test_memory_create_destroy();
 
-	test_attacker();
-	test_attacker();
-	test_attacker();
 	return 0;
 }
