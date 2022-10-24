@@ -4,11 +4,18 @@
 namespace network
 {
 
-enum NetworkState {
+enum State {
   	  READY
 	, CONNECTED
 	, HALT
 	, ERROR
+};
+
+enum Type
+{
+      NO_NETWORK
+    , TYPEA
+    , TYPEB
 };
 
 } // namespace Network

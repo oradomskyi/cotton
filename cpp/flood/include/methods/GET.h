@@ -6,7 +6,7 @@
 class GET : public TCPFlood
 {
 private:
-	static const flood::RequestType requestType = flood::RequestType::GET;
+	static const flood::RequestType type = flood::RequestType::GET;
 	string requestRawPathQS;
 	string requestBody;
 public:
@@ -14,6 +14,7 @@ public:
 	
 	void start();
 	void stop();
+    flood::RequestType getType() { return this->type; };
 };
 
 #endif

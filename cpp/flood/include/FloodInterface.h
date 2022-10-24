@@ -5,13 +5,11 @@
 
 class FloodInterface
 {
-protected:
-	flood::State state;
-	void setState(flood::State new_state);
 public:
 	virtual void start() = 0;
 	virtual void stop() = 0;
-	flood::State getState();
+    virtual flood::RequestType getType() = 0;
+	virtual flood::State getState() = 0;
 };
 
 #endif

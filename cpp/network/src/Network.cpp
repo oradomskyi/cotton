@@ -4,26 +4,10 @@ namespace network
 {
 
 Network::Network()
-	: handle(nullptr)
-{
-	setState(NetworkState::READY);
-}
-Network::~Network()
+    : state(network::State::ERROR)
 {}
 
-void Network::connect()
-{
-	setState(NetworkState::CONNECTED);
-}
-
-void Network::disconnect()
-{
-	setState(NetworkState::READY);
-}
-
-NetworkHandle* Network::getHandle()
-{
-	return this->handle;
-}
+Network::~Network()
+{}
 
 }

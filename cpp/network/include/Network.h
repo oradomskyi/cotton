@@ -2,23 +2,21 @@
 #define NETWORK_H
 
 #include "NetworkInterface.h"
-#include "NetworkHandle.h"
 
 namespace network
 {
 
 class Network : public NetworkInterface
 {
-private:
-	NetworkHandle* handle; // I keep pointer, so it could be either local or global
-	
+protected:
+	network::State state;
+	void setState(network::State new_state) { this->state = new_state; };
+
 public:
 	Network();
 	virtual ~Network();
-	
-	void connect();
-	void disconnect();
-	NetworkHandle* getHandle();
+
+	network::State getState() { return this->state; };
 };
 
 } // namespace Network

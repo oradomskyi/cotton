@@ -1,14 +1,15 @@
 #include "../include/Flood.h"
 
 Flood::Flood(string address, uint16_t port)
-	:target(address, port)
+	: target(address, port)
+    , networkPtr(nullptr)
+    , state(flood::State::ERROR)
 {
 	this->initNetwork();
 }
 
 Flood::~Flood()
 {
-	this->networkPtr->~Network();
 	delete this->networkPtr;
 }
 
@@ -19,10 +20,12 @@ Target* Flood::getTarget()
 
 void Flood::initNetwork()
 {
-	this->networkPtr = new Network();
+	this->networkPtr = new network::NoNetwork();
 }
 
 Network* Flood::getNetworkPtr()
 {
 	return this->networkPtr;
 }
+
+

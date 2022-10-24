@@ -7,7 +7,7 @@ GET::GET(string address, uint16_t port)
 {	
 	this->setHeader(this->getDefaultHeader());
 	
-	this->createRequest(this->requestType, requestRawPathQS, requestBody);
+	this->createRequest(this->type, requestRawPathQS, requestBody);
 	
 	this->getTarget()->updateProxy(ProxyManager::getInstance()->getRandomProxy());
 	
