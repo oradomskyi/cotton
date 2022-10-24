@@ -7,7 +7,7 @@ void test_check_Proxy_security()
 	// error: assignment of read-only location 
 	
 	/*
-	MethodGET attacker(string("1.2.3.4"), 5678); // create attacker
+	GET attacker(string("1.2.3.4"), 5678); // create attacker
 	attacker.getTarget()->getProxyPtr()->getAddress() = string("yeyeye"); // trying to assign read-only address
 	attacker.getTarget()->getProxyPtr()->getPort() = 777; // trying to assign read-only port
 	*/
@@ -19,7 +19,7 @@ void test_check_Target_security()
 	// expected behavior code not able to compile with
 	// error: assignment of read-only location 
 	/*
-	MethodGET attacker(string("1.2.3.4"), 5678);
+	GET attacker(string("1.2.3.4"), 5678);
 	attacker.getTarget()->getAddress() = string("yeyeye"); // trying to assign read-only address
 	attacker.getTarget()->getPort() = 777; // trying to assign read-only port
 	*/
@@ -30,7 +30,7 @@ void test_memory_create_destroy()
 	// expected behavior is that occupied memory stays constant
 	for(int i = 0; i < 1000000; i++)
 	{
-		MethodGET attacker(string("1.2.3.4"), 5678);
+		GET attacker(string("1.2.3.4"), 5678);
 		attacker.start();
 		attacker.stop();
 	}
@@ -39,7 +39,7 @@ void test_memory_create_destroy()
 void test_create_worker()
 {
 	cout << endl;
-	MethodGET attacker(string("1.2.3.4"), 5678);
+	GET attacker(string("1.2.3.4"), 5678);
 	
 	cout <<  endl <<"target=" << attacker.getTarget()->getAddress() 
 		<< ":" << attacker.getTarget()->getPort() 

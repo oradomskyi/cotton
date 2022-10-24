@@ -6,12 +6,12 @@
 class FloodInterface
 {
 protected:
-	FloodState state;
-	void setState(FloodState new_state);
+	flood::State state;
+	void setState(flood::State new_state);
 public:
 	virtual void start() = 0;
 	virtual void stop() = 0;
-	FloodState getState();
+	flood::State getState();
 };
 
 #endif

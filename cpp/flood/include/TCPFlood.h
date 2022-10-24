@@ -3,7 +3,6 @@
 
 #include <time.h>
 #include "Flood.h"
-#include "constants.h"
 #include "useragents.h"
 #include "ProxyManager.h"
 
@@ -17,7 +16,7 @@ protected:
 	
 	void setHeader(const string& headers);
 	
-	void createRequest(RequestType reqestType, const string& qsPathRaw, const string& body);
+	void createRequest(flood::RequestType reqestType, const string& qsPathRaw, const string& body);
 	
 public:
 	TCPFlood(string address, uint16_t port);

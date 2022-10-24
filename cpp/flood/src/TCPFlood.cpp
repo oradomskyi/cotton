@@ -16,7 +16,7 @@ TCPFlood::TCPFlood(string address, uint16_t port)
     string raw_authority = "111.111.111.111"; // self._url.raw_authority
     string user_agent =  USERAGENTS[rand() % USERAGENTS.size()];
     
-    this->defaultHeader = TCPHeaderBase
+    this->defaultHeader = flood::TCPHeaderBase
 		+ "Host: " + raw_authority + rn
         + "Origin: " + origin + rn
         + "Referer: " + origin + rn // emulate Referrer-Policy: origin
@@ -36,10 +36,10 @@ const string& TCPFlood::getRequest() const { return this->request; }
 
 const string& TCPFlood::getDefaultHeader() const { return this->defaultHeader; }
 
-void TCPFlood::createRequest(RequestType reqestType, const string& qsPathRaw, const string& body)
+void TCPFlood::createRequest(flood::RequestType reqestType, const string& qsPathRaw, const string& body)
 {
 	// method is unsafe because assumes header is already created and request type is valid
-	this->request += RequestTypeStr.at(reqestType);
+	this->request += flood::RequestTypeStr.at(reqestType);
 	this->request += " ";
 	this->request += qsPathRaw;
 	this->request += " HTTP/1.1" + rn;

@@ -1,6 +1,6 @@
-#include "../../include/methods/MethodGET.h"
+#include "../../include/methods/GET.h"
 
-MethodGET::MethodGET(string address, uint16_t port)
+GET::GET(string address, uint16_t port)
 	:TCPFlood(address, port)
 	, requestRawPathQS("/") // TODO: find out parsing similar to Python's YARL
 	, requestBody("")
@@ -11,15 +11,15 @@ MethodGET::MethodGET(string address, uint16_t port)
 	
 	this->getTarget()->updateProxy(ProxyManager::getInstance()->getRandomProxy());
 	
-	this->setState(FloodState::READY);
+	this->setState(flood::State::READY);
 }
-	
 
-void MethodGET::start()
+void GET::start()
 {
-	this->setState(FloodState::RUNNING);
+	this->setState(flood::State::RUNNING);
 }
-void MethodGET::stop()
+
+void GET::stop()
 {
-	this->setState(FloodState::HALT);
+	this->setState(flood::State::HALT);
 }

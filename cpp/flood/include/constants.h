@@ -1,5 +1,5 @@
-#ifndef WORKER_CONSTANTS_H
-#define WORKER_CONSTANTS_H
+#ifndef FLOODCONSTANTS_H
+#define FLOODCONSTANTS_H
 
 #include <vector>
 #include <unordered_map>
@@ -10,7 +10,12 @@ using std::string;
 using std::pair;
 using std::vector;
 
-enum FloodState {
+static const string rn = "\\r\\n";
+
+namespace flood
+{
+
+enum State {
   	  READY
 	, RUNNING
 	, HALT
@@ -31,8 +36,6 @@ static const unordered_map<RequestType, string> RequestTypeStr = {
 	, { RequestType::NONE , ""     }
 };
 
-static const string rn = "\\r\\n";
-
 // several methods are using custom values for 'User-Agent' and 'Content-Length'
 // so there is a chance I will have to switch to a unordered_map<string, string>
 static const string TCPHeaderBase = 
@@ -48,4 +51,5 @@ static const string TCPHeaderBase =
         + "Pragma" + ": " + "no-cache" + rn
 ;
 
+} // flood
 #endif

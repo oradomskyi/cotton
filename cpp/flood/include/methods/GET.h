@@ -2,16 +2,15 @@
 #define METHOD_GET_H
 
 #include "../TCPFlood.h"
-#include "../constants.h"
 
-class MethodGET : public TCPFlood
+class GET : public TCPFlood
 {
 private:
-	static const RequestType requestType = RequestType::GET;
+	static const flood::RequestType requestType = flood::RequestType::GET;
 	string requestRawPathQS;
 	string requestBody;
 public:
-	MethodGET(std::string address, uint16_t port);
+	GET(std::string address, uint16_t port);
 	
 	void start();
 	void stop();

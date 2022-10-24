@@ -23,6 +23,11 @@ public:
 		:address(address)
 		,port(port)
 	{};
+
+	IPPort(const IPPort& other)
+		:address(other.address)
+		,port(other.port)
+	{};
 	
 	const string& getAddress() const { return this->address; };
 	const uint16_t& getPort() const { return this->port; };
