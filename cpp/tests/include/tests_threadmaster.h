@@ -9,7 +9,8 @@ using std::string;
 using std::cout;
 using std::endl;
 
-void test_init_empty();
-void test_init_with_floods();
+void test_threadmaster_run();
+void test_threadmaster_long_run();
+void test_threadmaster_init_with_floods();
 
 #endif

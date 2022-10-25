@@ -13,7 +13,7 @@ void Serial::start()
 {
     this->setState(threadmaster::State::RUNNING);
     
-    while(this->state != threadmaster::State::HALT)
+    //while(this->state != threadmaster::State::HALT)
     {
         for(Flood* flood : *(this->floodsPtr))
             flood->start();
@@ -22,6 +22,9 @@ void Serial::start()
 
 void Serial::stop()
 {
+    for(Flood* flood : *(this->floodsPtr))
+            flood->stop();
+    
     this->setState(threadmaster::State::HALT);
 }
 

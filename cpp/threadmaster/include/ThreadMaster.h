@@ -5,6 +5,7 @@
 
 #include "ThreadMasterInterface.h"
 #include "../../flood/include/Flood.h"
+#include "../../flood/include/methods/allmethods.h"
 
 using std::vector;
 

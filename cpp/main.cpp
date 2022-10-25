@@ -8,7 +8,10 @@ int main()
 	//test_check_Target_security();
 	//test_check_Proxy_security();
 
-    test_init_empty();
+    test_threadmaster_init_with_floods();
+    test_threadmaster_run();
+    test_threadmaster_long_run();
+
 
 	return 0;
 }
