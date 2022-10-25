@@ -3,5 +3,6 @@
 
 #include "tests_worker.h"
 #include "tests_network.h"
+#include "tests_threadmaster.h"
 
 #endif

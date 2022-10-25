@@ -1,10 +1,11 @@
 #include "../../include/network_types/TypeA.h"
 
-TypeA::TypeA()
-    : Network()
-{
-    
-}
+network::TypeA::TypeA()
+    : network::Network()
+{}
 
-TypeA::connect() { setState(network::State::ERROR); };
-TypeA::disconnect() { setState(network::State::ERROR); };
+network::TypeA::~TypeA()
+{}
+
+void network::TypeA::connect() { this->setState(network::State::ERROR); };
+void network::TypeA::disconnect() { this->setState(network::State::ERROR); };
