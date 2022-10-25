@@ -10,9 +10,6 @@ public:
 		:IPPort(address, port)
 	{};
 	
-	Proxy(const Proxy& other)
-		:IPPort(other.address, other.port)
-	{};
 };
 
 #endif
