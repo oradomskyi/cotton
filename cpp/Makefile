@@ -1,7 +1,7 @@
 # g++ -Wall -W -Werror main.cpp flood/src/*.cpp flood/src/methods/*.cpp network/src/*.cpp tests/src/*.cpp -o tool -O0
 
 CC := g++
-CFLAGS = -Wall -W -Werror -O0
+CFLAGS = -Wall -W -Werror -O0 -std=c++14
 
 DIR_SRC_FLOOD = flood/src/
 DIR_SRC_FLOOD_METHODS = flood/src/methods/
