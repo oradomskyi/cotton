@@ -20,7 +20,7 @@ Target* Flood::getTarget()
 
 void Flood::initNetwork()
 {
-	this->networkPtr = new network::NoNetwork();
+	this->networkPtr = new network::TypeA();
 }
 
 Network* Flood::getNetworkPtr()

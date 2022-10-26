@@ -19,7 +19,8 @@ public:
     {};
 
     void connect() { setState(network::State::ERROR); };
-    void disconnect() { setState(network::State::ERROR); };
+    void write() { setState(network::State::ERROR); };
+    void disconnect() { setState(network::State::ERROR); };    
     network::Type getType() { return this->type; }; 
 };
 
