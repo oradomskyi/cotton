@@ -1,22 +1,21 @@
-#include "../../include/network_types/TypeA.h"
+#include "../../include/networks/SocketGLIBC.h"
 
-network::TypeA::TypeA()
-    : network::Network()
+SocketGLIBC::SocketGLIBC()
+    : Network()
     , m_socket(-1) // todo move to constants
 {
     cout << "TypeA ctor" << endl;
 }
 
-network::TypeA::~TypeA()
+SocketGLIBC::~SocketGLIBC()
 {
     cout << "TypeA dtor" << endl;
 }
 
-void network::TypeA::connect()
+void SocketGLIBC::connect()
 {
     cout << "TypeA conn" << endl;
 
-    this->setState(network::State::HALT);
 
     int sock = socket(PF_INET, SOCK_DGRAM, 0); // todo move to constants
 
@@ -36,15 +35,14 @@ void network::TypeA::connect()
     this->setState(network::State::CONNECTED);
 }
 
-void network::TypeA::write()
+void SocketGLIBC::write()
 {
     this->setState(network::State::READY);
 }
 
-void network::TypeA::disconnect()
+void SocketGLIBC::disconnect()
 {
 cout << "TypeA disconn" << endl;
-    this->setState(network::State::HALT);
 
     int err = shutdown(this->m_socket, this->shutdown_mode); // todo move to constants
     this->m_socket = -1; // todo move to constants

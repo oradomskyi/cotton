@@ -7,15 +7,15 @@ namespace network
 enum State {
   	  READY
 	, CONNECTED
-	, HALT
+	, PENDING
 	, ERROR
 };
 
 enum Type
 {
       NO_NETWORK
-    , TYPEA
-    , TYPEB
+    , SOCKET_GLIBC
+    , OTHER
 };
 
 } // namespace Network

@@ -3,9 +3,7 @@
 
 #include "FloodInterface.h"
 #include "Target.h"
-#include "../../network/include/networks.h"
-
-using network::Network;
+#include "../../network/include/networks/networks.h"
 
 class Flood : public FloodInterface
 {

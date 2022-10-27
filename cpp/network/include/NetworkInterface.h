@@ -3,9 +3,6 @@
 
 #include "constants.h"
 
-namespace network
-{
-
 class NetworkInterface
 {
 public:
@@ -15,7 +12,4 @@ public:
     virtual network::Type getType() = 0;
     virtual network::State getState() = 0;
 };
-
-} // namespace Network
-
 #endif

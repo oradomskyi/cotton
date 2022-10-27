@@ -3,9 +3,6 @@
 
 #include "NetworkInterface.h"
 
-namespace network
-{
-
 class Network : public NetworkInterface
 {
 protected:
@@ -18,7 +15,4 @@ public:
 
 	network::State getState() { return this->state; };
 };
-
-} // namespace Network
-
 #endif

@@ -3,9 +3,6 @@
 
 #include "../Network.h"
 
-namespace network
-{
-
 class NoNetwork : public Network
 {
 private:
@@ -23,6 +20,4 @@ public:
     void disconnect() { setState(network::State::ERROR); };    
     network::Type getType() { return this->type; }; 
 };
-
-}
 #endif
