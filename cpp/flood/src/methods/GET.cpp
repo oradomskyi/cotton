@@ -1,8 +1,5 @@
 #include "../../include/methods/GET.h"
 
-//#include <iostream>
-//using std::cout;
-//using std::endl;
 
 GET::GET(string address, uint16_t port)
 	:TCPFlood(address, port)
@@ -15,6 +12,8 @@ GET::GET(string address, uint16_t port)
 	
 	this->getTarget()->updateProxy(ProxyManager::getInstance()->getRandomProxy());
 	
+    this->getNetworkPtr()->connect(); // todo: do we connect here or when start() ???
+
 	this->setState(flood::State::READY);
 }
 

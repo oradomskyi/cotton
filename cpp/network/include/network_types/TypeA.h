@@ -19,6 +19,9 @@ class TypeA : public Network
 {
 private:
     static const network::Type type = network::Type::TYPEA;
+
+    int m_socket;
+    static const int shutdown_mode = 2; // todo move to constants // stop both reception and transmission
 public:
     TypeA();
     ~TypeA();
