@@ -15,6 +15,11 @@ private:
 	static const flood::RequestType type = flood::RequestType::GET;
 	string requestRawPathQS;
 	string requestBody;
+
+	// it is up to a particular method to init proper instance of a network
+	// TCP or UDP in case of glibc Sockets
+	void initNetwork() override;
+
 public:
 	GET(std::string address, uint16_t port);
 	

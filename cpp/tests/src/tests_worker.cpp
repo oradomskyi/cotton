@@ -51,9 +51,9 @@ void test_create_worker()
 	cout << endl <<"request=" << attacker.getRequest() << endl;
 	cout << endl <<"networkState=" << attacker.getNetworkPtr()->getState() << endl;
 	
-	attacker.getNetworkPtr()->connect();
+	attacker.getNetworkPtr()->Connect();
 	cout << endl <<"called Network::connect(), networkState=" << attacker.getNetworkPtr()->getState() << endl;
-	attacker.getNetworkPtr()->disconnect();
+	attacker.getNetworkPtr()->Disconnect();
 	cout << endl <<"called Network::disconnect(), networkState=" << attacker.getNetworkPtr()->getState() << endl;
 	
 	

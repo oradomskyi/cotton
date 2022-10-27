@@ -1,7 +1,10 @@
 #ifndef NETWORK_H
 #define NETWORK_H
 
+#include <string>
 #include "NetworkInterface.h"
+
+using std::string;
 
 class Network : public NetworkInterface
 {

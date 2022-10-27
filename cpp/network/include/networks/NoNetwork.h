@@ -15,9 +15,9 @@ public:
     ~NoNetwork()
     {};
 
-    void connect() { setState(network::State::ERROR); };
-    void write() { setState(network::State::ERROR); };
-    void disconnect() { setState(network::State::ERROR); };    
+    void Connect() { setState(network::State::ERROR); };
+    void Write() { setState(network::State::ERROR); };
+    void Disconnect() { setState(network::State::ERROR); };    
     network::Type getType() { return this->type; }; 
 };
 #endif

@@ -5,10 +5,10 @@ namespace network
 {
 
 enum State {
-  	  READY
+	  ERROR = -1
+  	, READY
 	, CONNECTED
 	, PENDING
-	, ERROR
 };
 
 enum Type
@@ -16,6 +16,12 @@ enum Type
       NO_NETWORK
     , SOCKET_GLIBC
     , OTHER
+};
+
+enum SocketState
+{
+	  SOCKET_ERROR = -1
+	, SOCKET_OK = 0
 };
 
 } // namespace Network

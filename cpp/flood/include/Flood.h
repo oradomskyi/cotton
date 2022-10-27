@@ -12,7 +12,7 @@ protected:
 	Network* networkPtr;
     flood::State state;
 
-	void initNetwork();
+	virtual void initNetwork(){};
 	void setState(flood::State new_state) { this->state = new_state; };
 public:
 	Flood(string address, uint16_t port);
