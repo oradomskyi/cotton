@@ -50,21 +50,6 @@ SocketGLIBC::SocketGLIBC(const string& address, const uint16_t& port)
     }
 
 	this->m_servername.sin_addr = *(struct in_addr *) hostinfo->h_addr;
-	//cout<<"h_addr " << hostinfo->h_addr << endl;
-
-
-	char buff[1024];
-	for(int i =0; i<1024;i++)
-		buff[i] = '.';
-
-	//memset(buff, '0', sizeof(buff));
-	
-	cout<<"recv: " <<endl;
-	read(this->m_socket, buff, sizeof(buff)-1);
-	for(int i =0; i<1024; i++)
-		cout<< buff[i];
-
-	cout << endl;
 
 	this->setState(network::State::READY);
 
@@ -99,11 +84,16 @@ void SocketGLIBC::Connect()
 
     this->setState(network::State::CONNECTED);
 	cout<<"conn state " << this->state << endl;
+
+	/**/
+
 }
 
-void SocketGLIBC::Write()
-{
+void SocketGLIBC::Write(const string& data)
+{ 
+    write(this->m_socket, data.c_str(), data.size());
     this->setState(network::State::READY);
+    cout<<"Write state " << this->state << endl;
 }
 
 void SocketGLIBC::Disconnect()

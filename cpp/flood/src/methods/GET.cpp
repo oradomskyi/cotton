@@ -23,12 +23,14 @@ GET::GET(string address, uint16_t port)
 void GET::start()
 {
 	this->setState(flood::State::RUNNING);
+    this->getNetworkPtr()->Write(this->header); 
     //cout << this->getType() << " " << this->getState() << " " << this->getTarget()->getAddress() << endl;
 }
 
 void GET::stop()
 {
 	this->setState(flood::State::HALT);
+    this->getNetworkPtr()->Disconnect();
     //cout << this->getType() << " " << this->getState() << " " << this->getTarget()->getAddress() << endl;
 }
 

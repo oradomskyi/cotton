@@ -49,7 +49,7 @@ public:
     ~SocketGLIBC();
 
     void Connect();
-    void Write();
+    void Write(const string& data);
     void Disconnect();
     network::Type getType() { return this->type; }; 
 

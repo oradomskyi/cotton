@@ -1,7 +1,7 @@
 #include "../include/tests_threadmaster.h"
 
-static const string ip1 = "markets.businessinsider.com";
-static const uint16_t port1 = 80;
+static const string ip1 = "192.168.56.1";
+static const uint16_t port1 = 65123;
 
 void test_threadmaster_run()
 {
@@ -53,7 +53,8 @@ void test_threadmaster_init_with_floods()
     };
        
     Serial s(&v);
-    
+    s.start();
+    s.stop();
 
     cout << "Serial.getState() = " << s.getState() << endl;
     cout << "Serial.getType() = " << s.getType() << endl;
