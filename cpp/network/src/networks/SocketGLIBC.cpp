@@ -50,23 +50,21 @@ SocketGLIBC::SocketGLIBC(const string& address, const uint16_t& port)
     }
 
 	this->m_servername.sin_addr = *(struct in_addr *) hostinfo->h_addr;
-	cout<<"h_addr " << hostinfo->h_addr << endl;
+	//cout<<"h_addr " << hostinfo->h_addr << endl;
 
-	/*// convert server address into bit-format
-	int err = inet_pton(AF_INET, this->address.c_str(), &this->m_servername.sin_addr);
 
-	if (network::SocketState::SOCKET_ERROR >= err)
-	{
-		this->setState(network::State::ERROR);
- 		cout<<"Cannot get binary representation inet_pton() of server" << this->address << endl;
-	}
-	*/
 	char buff[1024];
-	//memset(buff, '0', sizeof(buff));
-
-	recv(this->m_socket, buff, sizeof(buff)-1, MSG_OOB);
 	for(int i =0; i<1024;i++)
+		buff[i] = '.';
+
+	//memset(buff, '0', sizeof(buff));
+	
+	cout<<"recv: " <<endl;
+	read(this->m_socket, buff, sizeof(buff)-1);
+	for(int i =0; i<1024; i++)
 		cout<< buff[i];
+
+	cout << endl;
 
 	this->setState(network::State::READY);
 

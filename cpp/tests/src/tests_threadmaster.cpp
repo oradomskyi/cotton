@@ -1,7 +1,7 @@
 #include "../include/tests_threadmaster.h"
 
 static const string ip1 = "markets.businessinsider.com";
-static const uint16_t port1 = 443;
+static const uint16_t port1 = 80;
 
 void test_threadmaster_run()
 {

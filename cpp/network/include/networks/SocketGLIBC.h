@@ -10,6 +10,13 @@
 #include <netinet/in.h>
 #include <arpa/inet.h> // inet_pton()
 
+#include <stdio.h>
+#include <sys/un.h>
+#include <errno.h>
+#include <unistd.h>
+#include <sys/types.h>
+
+
 #include "../Network.h"
 
 using std::cout; // remove when not needed, this is for debug only
