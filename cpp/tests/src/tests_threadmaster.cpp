@@ -1,13 +1,14 @@
 #include "../include/tests_threadmaster.h"
 
+static const string ip1 = "markets.businessinsider.com";
+static const uint16_t port1 = 443;
+
 void test_threadmaster_run()
 {
     cout << "test_threadmaster_run" << endl;
 
     vector<Flood*> v = { 
-          new GET(string("1.1.9.1"), 191)
-        , new GET(string("2.1.9.1"), 291)
-        , new GET(string("1.3.9.4"), 694)
+          new GET(ip1, port1)
     };
        
     Serial s(&v);
@@ -30,9 +31,7 @@ void test_threadmaster_long_run()
     cout << "test_threadmaster_long_run" << endl;
 
     vector<Flood*> v = { 
-          new GET(string("1.1.9.1"), 191)
-        , new GET(string("2.1.9.1"), 291)
-        , new GET(string("1.3.9.4"), 694)
+          new GET(ip1, port1)
     };
 
     for(int i = 0; i < 1000000; i++)
@@ -50,9 +49,7 @@ void test_threadmaster_init_with_floods()
     cout << "test_threadmaster_init_with_floods" << endl;
 
     vector<Flood*> v = { 
-          new GET(string("1.1.9.1"), 191)
-        , new GET(string("2.1.9.1"), 291)
-        , new GET(string("1.3.9.4"), 694)
+          new GET(string(ip1), port1)
     };
        
     Serial s(&v);
