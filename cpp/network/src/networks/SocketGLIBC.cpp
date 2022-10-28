@@ -64,7 +64,7 @@ SocketGLIBC::SocketGLIBC(const string& address, const uint16_t& port)
 	char buff[1024];
 	//memset(buff, '0', sizeof(buff));
 
-	recv(this->m_socket, buff, sizeof(buff)-1, sizeof(buff));
+	recv(this->m_socket, buff, sizeof(buff)-1, MSG_OOB);
 	for(int i =0; i<1024;i++)
 		cout<< buff[i];
 
