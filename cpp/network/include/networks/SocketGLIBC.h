@@ -24,14 +24,6 @@ using std::endl; // remove when not needed, this is for debug only
 
 using std::string;
 
-/*
-namespace glibc
-{
-	int tmp
-	//int connect();
-	//int connect();
-}*/
-
 class SocketGLIBC : public Network
 {
 private:
@@ -57,7 +49,7 @@ public:
 
     network::Type getType() { return this->type; }; 
 
-	void setAddress(const string& address) { this->address = address; };   // not sure this is a good design decision
-	void setPort(const uint16_t& port) { this->port = port; }; // not sure this is a good design decision
+	void setAddress(const string& address) { this->address = address; };   // not sure this is a good design decision to have a copy of host and port
+	void setPort(const uint16_t& port) { this->port = port; }; // not sure this is a good design decision to have a copy of host and port
 };
 #endif

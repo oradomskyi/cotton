@@ -13,9 +13,8 @@ enum State
 {
 	  ERROR = -1
   	, CREATED
-	, CONNECTED
     , HOST_RESOLVED
-	, PENDING
+	, CONNECTED
 };
 
 enum Type

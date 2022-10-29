@@ -30,21 +30,39 @@ void GET::start()
 	// it is better to keep connection alive to avoid overhead	
     // https://stackoverflow.com/questions/20599570/is-it-better-to-keep-a-socket-open-for-frequent-requests-or-to-close-the-socket
     
-    if(network::State::CREATED != this->getNetworkPtr()->getState())
-        this->getNetworkPtr()->Create();
+    // TODO: Refactor this shit
+    switch(this->getNetworkPtr()->getState())    
+    {
+        case(network::State::ERROR): {
+            if(network::Result::RESULT_OK == this->getNetworkPtr()->Create()) {
+                if(network::Result::RESULT_OK == this->getNetworkPtr()->Resolve()) {
+                    if(network::Result::RESULT_OK == this->getNetworkPtr()->Connect()) {
+                        this->getNetworkPtr()->Write(this->header);
+                    } else {}
+                } else {}
+            } else {}
+            break;
+        }
+        case(network::State::CREATED): {
+            if(network::Result::RESULT_OK == this->getNetworkPtr()->Resolve()) {
+                if(network::Result::RESULT_OK == this->getNetworkPtr()->Connect()) {
+                    this->getNetworkPtr()->Write(this->header);
+                } else {}
+            } else {}
+            break;
+        }
+        case(network::State::HOST_RESOLVED): {
+                if(network::Result::RESULT_OK == this->getNetworkPtr()->Connect()) {
+                    this->getNetworkPtr()->Write(this->header);
+                } else {}
+            break;
+        }
+        case(network::State::CONNECTED): {
+            this->getNetworkPtr()->Write(this->header);
+            break;
+        }
+    }    
 
-    if(network::State::CREATED == this->getNetworkPtr()->getState())
-        this->getNetworkPtr()->Resolve();
-    else
-        return;
-
-    if(network::State::HOST_RESOLVED == this->getNetworkPtr()->getState())
-        this->getNetworkPtr()->Connect();
-    else
-        return;
-
-    this->getNetworkPtr()->Write(this->header);
-    
     this->setState(flood::State::READY);
 
     //cout << this->getType() << " " << this->getState() << " " << this->getTarget()->getAddress() << endl;
