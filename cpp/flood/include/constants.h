@@ -16,10 +16,10 @@ namespace flood
 {
 
 enum State {
-  	  READY
+      ERROR = -1
+  	, READY
 	, RUNNING
 	, HALT
-	, ERROR
 };
 
 enum RequestType {

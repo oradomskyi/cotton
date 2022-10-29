@@ -48,9 +48,13 @@ public:
     SocketGLIBC(const string& address, const uint16_t& port);
     ~SocketGLIBC();
 
-    void Connect();
-    void Write(const string& data);
-    void Disconnect();
+    network::Result Create();
+    network::Result Resolve();
+    network::Result Connect();
+    network::Result Write(const string& data);
+    network::Result Disconnect();
+    network::Result Shutdown();
+
     network::Type getType() { return this->type; }; 
 
 	void setAddress(const string& address) { this->address = address; };   // not sure this is a good design decision

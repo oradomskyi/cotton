@@ -9,9 +9,12 @@ using std::string;
 class NetworkInterface
 {
 public:
-	virtual void Connect() = 0;
-	virtual void Write(const string& data) = 0;
-	virtual void Disconnect() = 0;
+    virtual network::Result Create() = 0;
+    virtual network::Result Resolve() = 0;
+	virtual network::Result Connect() = 0;
+	virtual network::Result Write(const string& data) = 0;
+	virtual network::Result Disconnect() = 0;
+    virtual network::Result Shutdown() = 0;
     virtual network::Type getType() = 0;
     virtual network::State getState() = 0;
 };

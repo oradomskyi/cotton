@@ -4,10 +4,17 @@
 namespace network
 {
 
-enum State {
+enum Result {
+      RESULT_ERROR = -1
+    , RESULT_OK = 0
+};
+
+enum State
+{
 	  ERROR = -1
-  	, READY
+  	, CREATED
 	, CONNECTED
+    , HOST_RESOLVED
 	, PENDING
 };
 
