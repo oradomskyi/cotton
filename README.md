@@ -8,3 +8,7 @@ Developers are not responsible for any kind of damage it may cause, use for your
 
 Good luck! 
 ^_^
+
+![cotton](https://user-images.githubusercontent.com/15631226/198873079-8c664bd6-b149-4523-af28-b9ecc36f87cc.jpg)
+
+*I do not own any rights for this image, if Author is against of posting it here please let me know - I will remove it.
