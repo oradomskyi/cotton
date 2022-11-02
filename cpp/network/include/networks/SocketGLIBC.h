@@ -1,5 +1,5 @@
-#ifndef NETWORKTYPEA_H
-#define NETWORKTYPEA_H
+#ifndef NETWORK_SOCKETGLIBC_H
+#define NETWORK_SOCKETGLIBC_H
 
 #include <iostream>
 

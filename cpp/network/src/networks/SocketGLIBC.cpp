@@ -31,37 +31,58 @@ network::Result SocketGLIBC::Create()
 
 	// TCP SOCK_STREAM
 	// UDP SOCK_DGRAM
+    try
+    {
+        this->m_socket = socket(PF_INET, SOCK_STREAM, 0); // todo move to constants
+   	    cout << "socket is " << this->m_socket << endl;
+        if(network::SocketState::SOCKET_ERROR >= this->m_socket)
+        {
+            this->state = network::State::ERROR;
+   		    cout << "err socket is " << this->m_socket << endl;
+            return network::Result::RESULT_ERROR;
+        }
+      	this->m_servername.sin_family = AF_INET;
+      	this->m_servername.sin_port = htons (this->port);
+    	
+        this->state = network::State::CREATED;
 
-    this->m_socket = socket(PF_INET, SOCK_STREAM, 0); // todo move to constants
-   	cout << "socket is " << this->m_socket << endl;
-    if(network::SocketState::SOCKET_ERROR >= this->m_socket)
+        cout << "ok socket is " << this->m_socket << endl;
+        return network::Result::RESULT_OK;
+    }
+    catch(...)
     {
         this->state = network::State::ERROR;
    		cout << "err socket is " << this->m_socket << endl;
-        return network::Result::RESULT_ERROR;
+        return network::Result::RESULT_ERROR;    
     }
-  	this->m_servername.sin_family = AF_INET;
-  	this->m_servername.sin_port = htons (this->port);
-    	
-    this->state = network::State::CREATED;
-    return network::Result::RESULT_OK;
 }
 
 network::Result SocketGLIBC::Resolve()
 {
     cout << this->state << this->m_socket << "SocketGLIBC resolve" << endl;
-	struct hostent* hostinfo = gethostbyname (this->address.c_str());
-	cout<<"host addr " << this->address << ", h_name " << hostinfo->h_name<< endl;
-  	if (hostinfo == nullptr)
+    try
+    {
+	    struct hostent* hostinfo = gethostbyname (this->address.c_str());
+	    cout<<"host addr " << this->address << ", h_name " << hostinfo->h_name<< " port "<<this->port<< endl;
+  	    if (hostinfo == nullptr)
+        {
+		    cout<<"Unknown host " << this->address << endl;
+    		return network::Result::RESULT_ERROR;
+        }
+
+	    this->m_servername.sin_addr = *(struct in_addr *) hostinfo->h_addr;
+
+	    this->state = network::State::HOST_RESOLVED;
+    }
+    catch(...)
     {
 		cout<<"Unknown host " << this->address << endl;
-		return network::Result::RESULT_ERROR;
+        return network::Result::RESULT_ERROR;
     }
 
-	this->m_servername.sin_addr = *(struct in_addr *) hostinfo->h_addr;
-
-	this->state = network::State::HOST_RESOLVED;
+    cout << "ok resolved" << this->m_socket << endl;
     return network::Result::RESULT_OK;
+    
 }
 
 network::Result SocketGLIBC::Connect()
@@ -70,18 +91,28 @@ network::Result SocketGLIBC::Connect()
 	
 	if(network::State::HOST_RESOLVED == this->state)
 	{
-		cout << this->m_servername.sin_family <<" "<<this->m_servername.sin_port << " "<< endl;///this->m_servername.sin_addr<<" " << endl;
-		int err = connect(this->m_socket
-			, (struct sockaddr *) &this->m_servername
-			, sizeof (this->m_servername));
-
-    	if (network::SocketState::SOCKET_ERROR >= err)
-    	{
-		    cout << "SocketGLIBC conn failed :( " << endl;
+        try
+        {
+		    cout << this->m_servername.sin_family <<" "<<this->m_servername.sin_port << " "<< endl;///this->m_servername.sin_addr<<" " << endl;
+		    int err = connect(this->m_socket
+			    , (struct sockaddr *) &this->m_servername
+			    , sizeof (this->m_servername));
+        
+    	    if (network::SocketState::SOCKET_ERROR >= err)
+    	    {
+		        cout << "SocketGLIBC conn failed :( " << endl;
+			    return network::Result::RESULT_ERROR;
+    	    }
+        }
+        catch(...)
+        {
+            cout << "SocketGLIBC conn failed :( " << endl;
 			return network::Result::RESULT_ERROR;
-    	}
+        }
 	}
     this->state = network::State::CONNECTED;
+
+    cout << "ok connect " << endl;
     return network::Result::RESULT_OK;
 }
 
@@ -118,23 +149,31 @@ network::Result SocketGLIBC::Shutdown()
     if(network::SocketState::SOCKET_ERROR == this->m_socket)
         return network::Result::RESULT_OK;
         
-    try {
-        shutdown(this->m_socket, this->shutdown_mode); // todo move to constants
-    } catch (...) { cout << this->m_socket << " failed to shutdown()" << endl; }
-
-try {
-        close(this->m_socket); 
-    } catch (...) { cout << this->m_socket << " failed to close()" << endl; return network::Result::RESULT_ERROR;}
-
-
-    int err = close(this->m_socket);
-
-    this->m_socket = network::SocketState::SOCKET_ERROR; 
-
-    if(network::SocketState::SOCKET_ERROR >= err)
+    try
     {
-	   	cout << "err close socket is " << err << endl;
-        return network::Result::RESULT_ERROR;
+        shutdown(this->m_socket, this->shutdown_mode); // todo move to constants
     }
+    catch(...)
+    {
+        cout << this->m_socket << " failed to shutdown()" << endl;
+    }
+
+    try
+    {
+        this->m_socket = network::SocketState::SOCKET_ERROR; 
+        
+        int err = close(this->m_socket);
+        if(network::SocketState::SOCKET_ERROR >= err)
+        {
+	   	    cout << "err close socket is " << err << endl;
+            return network::Result::RESULT_ERROR;
+        } 
+    }
+    catch(...)
+    {
+	   	    cout << "err close socket is " << endl;
+            return network::Result::RESULT_ERROR;
+    }
+
     return network::Result::RESULT_OK;
 }

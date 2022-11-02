@@ -11,6 +11,8 @@ using std::endl;
 
 void test_threadmaster_run();
 void test_threadmaster_long_run();
+void test_threadmaster_long_run_create_destroy();
 void test_threadmaster_init_with_floods();
+void test_threadmaster_paralleltype1_run();
 
 #endif
