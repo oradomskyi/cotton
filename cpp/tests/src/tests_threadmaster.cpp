@@ -78,30 +78,3 @@ void test_threadmaster_init_with_floods()
     
     cout << "ok"<<endl;
 }
-
-void test_threadmaster_paralleltype1_run()
-{
-    cout << "test_threadmaster_paralleltype1_run" << endl;
-
-    vector<Flood*> v = { 
-           new GET(ip1, 65123)
-          ,new GET(ip1, 65124)
-          ,new GET(ip1, 65125)
-          ,new GET(ip1, 65126)
-          ,new GET(ip1, 65127)
-    };
-       
-    ParallelPosix s(&v);
-    
-
-    cout << "ParallelType1.getState() = " << s.getState() << endl;
-    cout << "ParallelType1.getType() = " << s.getType() << endl;
-    
-    s.start();
-    s.stop();
-    
-    s.start();
-    s.stop();
-
-    cout << "ok"<<endl;
-}

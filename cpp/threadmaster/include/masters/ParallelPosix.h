@@ -28,6 +28,7 @@ namespace parallelposix
     };
 
     void* start_n_floods(void* args);
+    void* master_n_floods(void* args);
 }
 
 class ParallelPosix : public ThreadMaster
@@ -40,12 +41,16 @@ private:
     
 public:
     ParallelPosix(vector<Flood*>* new_floodsPtr);
-    //ParallelPosix(vector<Flood*>* new_floodsPtr, int n_threads);
+    ParallelPosix(vector<Flood*>* new_floodsPtr, int n_threads);
     ~ParallelPosix();
 
     void start();
     void stop();
     threadmaster::Type getType() { return this->type; };
+    
+    //vector<pthread_t>* getThreads() {return &this->threads; };
+    //int getNThreads() { return this->n_threads; };
+    //vector<Flood*>* getFloodsPtr() { return this->floodsPtr; };
 };
 
 #endif

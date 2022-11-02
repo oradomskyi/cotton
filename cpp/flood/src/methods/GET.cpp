@@ -64,15 +64,11 @@ void GET::start()
     }    
 
     this->setState(flood::State::READY);
-
-    //cout << this->getType() << " " << this->getState() << " " << this->getTarget()->getAddress() << endl;
 }
 
 void GET::stop()
 {
 	this->setState(flood::State::HALT);
-    this->getNetworkPtr()->Disconnect();
-    //cout << this->getType() << " " << this->getState() << " " << this->getTarget()->getAddress() << endl;
 }
 
 void GET::initNetwork()
