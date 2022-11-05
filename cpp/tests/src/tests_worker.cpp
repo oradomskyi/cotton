@@ -31,8 +31,9 @@ void test_memory_create_destroy()
 	for(int i = 0; i < 1000000; i++)
 	{
 		GET attacker(string("1.2.3.4"), 5678);
-		attacker.start();
-		attacker.stop();
+		attacker.enable();
+		attacker.run();
+		attacker.disable();
 	}
 }
 
@@ -57,10 +58,11 @@ void test_create_worker()
 	cout << endl <<"called Network::disconnect(), networkState=" << attacker.getNetworkPtr()->getState() << endl;
 	
 	
-	attacker.start();
+		attacker.enable();
+		attacker.run();
 	cout <<endl <<" called start(), state=" << attacker.getState() << endl;
 	
-	attacker.stop();
+		attacker.disable();
 	cout <<endl <<" called stop(), state=" << attacker.getState() << endl;
 	
 }

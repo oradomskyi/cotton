@@ -7,9 +7,9 @@ void test_parallelposix_startstop()
     cout << "test_parallelposix_startstop" << endl;
     
 
-    unsigned int sleep_delay_us = 10000000;
-
-   
+    unsigned int sleep_delay_10s = 10000000;
+	//unsigned int sleep_delay_2s = 2000000;
+    //unsigned int sleep_delay_001s = 10000;
 
     vector<Flood*> v = { 
            new GET(ip1, 65123)
@@ -21,31 +21,33 @@ void test_parallelposix_startstop()
        
     ParallelPosix s(&v, 2);
     
-
-
     cout << "ParallelPosix.getState() = " << s.getState() << endl;
     cout << "ParallelPosix.getType() = " << s.getType() << endl;
     
+
+        
     cout << "ParallelPosix.start() = " << endl;
-    s.start(); usleep(sleep_delay_us);
+    s.start(); usleep(sleep_delay_10s);
     cout << "ParallelPosix.stop() = " << endl;
-    s.stop(); usleep(sleep_delay_us);
+    s.stop(); usleep(sleep_delay_10s);
 
+    cout << "---- Stopping floods " << endl; 
     for(auto flood : v)
-        flood->stop();
+        flood->disable();
+        
+    cout << "ParallelPosix.start() = " << endl;    
+    s.start(); usleep(sleep_delay_10s);
+    cout << "ParallelPosix.stop() = " << endl;
+    s.stop(); usleep(sleep_delay_10s);
+
+    cout << "++++ Strating floods " << endl; 
+    for(auto flood : v)
+        flood->enable();
 
     cout << "ParallelPosix.start() = " << endl;    
-    s.start(); usleep(sleep_delay_us);
+    s.start(); usleep(sleep_delay_10s);
     cout << "ParallelPosix.stop() = " << endl;
-    s.stop(); usleep(sleep_delay_us);
-
-    for(auto flood : v)
-        flood->start();
-
-    cout << "ParallelPosix.start() = " << endl;    
-    s.start(); usleep(sleep_delay_us);
-    cout << "ParallelPosix.stop() = " << endl;
-    s.stop(); usleep(sleep_delay_us);
+    s.stop(); usleep(sleep_delay_10s);
 
     cout << "ok"<<endl;
 }

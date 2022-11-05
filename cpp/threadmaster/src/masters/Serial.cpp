@@ -16,14 +16,17 @@ void Serial::start()
     //while(this->state != threadmaster::State::HALT)
     {
         for(Flood* flood : *(this->floodsPtr))
-            flood->start();
+        {
+        	flood->enable();
+        	flood->run();
+        }
     }
 }
 
 void Serial::stop()
 {
     for(Flood* flood : *(this->floodsPtr))
-            flood->stop();
+            flood->disable();
     
     this->setState(threadmaster::State::HALT);
 }

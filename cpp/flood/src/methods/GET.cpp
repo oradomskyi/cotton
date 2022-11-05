@@ -24,8 +24,16 @@ GET::GET(string address, uint16_t port)
     this->setState(flood::State::ERROR);
 }
 
-void GET::start()
+void GET::enable()
 {
+	this->setState(flood::State::READY);
+}
+
+void GET::run()
+{
+	if(flood::State::READY != this->getState())
+		return;
+		
 	//this->setState(flood::State::RUNNING);
 	// it is better to keep connection alive to avoid overhead	
     // https://stackoverflow.com/questions/20599570/is-it-better-to-keep-a-socket-open-for-frequent-requests-or-to-close-the-socket
@@ -61,12 +69,10 @@ void GET::start()
             this->getNetworkPtr()->Write(this->header);
             break;
         }
-    }    
-
-    this->setState(flood::State::READY);
+    }
 }
 
-void GET::stop()
+void GET::disable()
 {
 	this->setState(flood::State::HALT);
 }

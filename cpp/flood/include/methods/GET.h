@@ -23,8 +23,9 @@ private:
 public:
 	GET(std::string address, uint16_t port);
 	
-	void start();
-	void stop();
+	void enable();
+	void run();
+	void disable();
     flood::RequestType getType() { return this->type; };
 };
 
