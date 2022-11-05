@@ -12,7 +12,7 @@ namespace parallelposix
     { 
         int from;
         int to;
-        const vector<Flood*>* pFloods;
+        vector<Flood*>* pFloods;
         
         thread_args()
             : from(0)
@@ -48,9 +48,9 @@ public:
     void stop();
     threadmaster::Type getType() { return this->type; };
     
-    //vector<pthread_t>* getThreads() {return &this->threads; };
-    //int getNThreads() { return this->n_threads; };
-    //vector<Flood*>* getFloodsPtr() { return this->floodsPtr; };
+    vector<pthread_t>* getThreads() {return &this->threads; };
+    int getNThreads() { return this->n_threads; };
+    vector<Flood*>* getFloodsPtr() { return this->floodsPtr; };
 };
 
 #endif
