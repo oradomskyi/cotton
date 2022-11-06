@@ -1,6 +1,9 @@
 #ifndef NETWORK_H
 #define NETWORK_H
 
+// https://forums.opensuse.org/showthread.php/450418-pthread_exit-c-and-FATAL-exception-not-rethrown
+#include <cxxabi.h>
+
 #include <string>
 #include "NetworkInterface.h"
 

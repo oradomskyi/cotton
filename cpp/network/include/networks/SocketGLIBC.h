@@ -1,7 +1,7 @@
 #ifndef NETWORK_SOCKETGLIBC_H
 #define NETWORK_SOCKETGLIBC_H
 
-#include <iostream>
+#include <iostream> // remove when not needed
 
 #include <string>
 #include <stdlib.h>
@@ -9,6 +9,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h> // inet_pton()
+#include <fcntl.h>
 
 #include <stdio.h>
 #include <sys/un.h>

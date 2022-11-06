@@ -2,7 +2,6 @@
 #define TESTS_PARALLELPOSIX_H
 
 #include <iostream>
-#include <unistd.h>
 
 #include "../../threadmaster/include/masters/threadmasters.h"
 

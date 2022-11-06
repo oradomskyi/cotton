@@ -1,13 +1,7 @@
 #ifndef METHOD_GET_H
 #define METHOD_GET_H
 
-#include <iostream>
-
 #include "../TCPFlood.h"
-
-
-using std::cout;
-using std::endl;
 
 class GET : public TCPFlood
 {

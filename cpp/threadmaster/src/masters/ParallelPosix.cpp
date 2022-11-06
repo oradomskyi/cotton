@@ -35,7 +35,7 @@ ParallelPosix::~ParallelPosix()
 
 void* parallelposix::start_n_floods(void* argsPtr)
 { 
-	pthread_mutex_t _lock;
+	pthread_mutex_t _lock = PTHREAD_MUTEX_INITIALIZER;
     parallelposix::thread_args args(((parallelposix::thread_args*)argsPtr)->from, ((parallelposix::thread_args*)argsPtr)->to, ((parallelposix::thread_args*)argsPtr)->pFloods);
     
     cout << "start_n_floods "<<args.from << ":" << args.to <<":"<<args.pFloods<<endl;
@@ -43,21 +43,45 @@ void* parallelposix::start_n_floods(void* argsPtr)
     // take control of how many alive targets we have, 
     // allow working if zero and allow stop if non-zero       
     while(true)
-    {
-    	for(int i = args.from; i < args.to; i++)    
-    	{   
-    		pthread_mutex_lock(&_lock);
-    		args.pFloods->at(i)->run(); // we have to make sure to have exclusive rights for this
-    		pthread_mutex_unlock(&_lock);
+    {	
+    	// pthread is pretty strange, it have to have cancellation points and rethrow exception,
+    	// see this:
+    	// 
+    	// https://stackoverflow.com/questions/34972909/fatal-exception-not-rethrown-in-c
+    	//
+    	// pthread cancel points 
+    	//
+    	// https://man7.org/linux/man-pages/man7/pthreads.7.html
+    	nanosleep((const struct timespec[]){{0, 500L}}, NULL); // sleep for a half of a microsecond
+    	
+    	try{
+    		for(int i = args.from; i < args.to; i++)    
+    		{   
+    			pthread_mutex_lock(&_lock);
+    			args.pFloods->at(i)->run(); // we have to make sure to have exclusive rights for this
+    			pthread_mutex_unlock(&_lock);
+    		}
     	}
+    	// https://forums.opensuse.org/showthread.php/450418-pthread_exit-c-and-FATAL-exception-not-rethrown
+    	catch (abi::__forced_unwind&)
+        {
+            for(int i = args.from; i < args.to; i++)    
+    		{  
+        		args.pFloods->at(i)->getNetworkPtr()->Shutdown();
+         		//printf("%d, start_n_floods forced unwind, calling Shutdown() \n", i);
+         	}
+        	throw;
+        } 
+        catch (...)
+        {}
     }
-    pthread_exit(NULL);
+    return 0;
 }
 
 void* parallelposix::master_n_floods(void* args)
 {
 	cout << "parallelposix::master_n_floods() " << endl;
-	
+
     // TODO: implement case when there less floods than threads.
     ParallelPosix* _this = (ParallelPosix*)args;
     
@@ -67,6 +91,8 @@ void* parallelposix::master_n_floods(void* args)
     
     for(int i_flood=0, i_thread=0; i_thread<n_threads; i_flood += n_floods_per_thread, i_thread++)
     {  
+    	nanosleep((const struct timespec[]){{0, 500L}}, NULL); // sleep for a half of a microsecond
+    	
         _this->getThreadArgs()->at(i_thread).from 	= i_flood;
         _this->getThreadArgs()->at(i_thread).to   	= min(i_flood+n_floods_per_thread, sz_floods);
         _this->getThreadArgs()->at(i_thread).pFloods	= _this->getFloodsPtr();
@@ -81,7 +107,7 @@ void* parallelposix::master_n_floods(void* args)
         _this->getThreads()->at(i_thread) = thread;
         cout << "thread: "<< _this->getThreads()->at(i_thread) << endl;
     }
-    pthread_exit(NULL);
+    return 0;
 }
 
 
@@ -95,16 +121,16 @@ void ParallelPosix::start()
   	
   	pthread_t master;
     pthread_create(&master, NULL, &parallelposix::master_n_floods, (void*) this);
-    this->master_thread = master;
-    pthread_join(this->master_thread, NULL);
-    
-    cout << "- master joined -" << this->master_thread <<endl;
-    
+
     for(pthread_t thread: this->threads)
     {
         pthread_detach(thread);
         cout << "- worker detached -"<< thread <<endl;
     }
+    
+    this->master_thread = master;
+    pthread_detach(this->master_thread);//, NULL);
+    cout << "- master detached -" << this->master_thread <<endl;
     
     this->setState(threadmaster::State::RUNNING);
 }
@@ -124,6 +150,7 @@ void ParallelPosix::stop()
     }
 
     pthread_cancel(this->master_thread);
+    
     //cout << err << " ParallelPosix::stop() pthread_cancel() master " << this->master_thread <<endl;
    
     cout << "end of ParallelPosix::stop()" << endl;

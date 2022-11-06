@@ -1,8 +1,8 @@
 #ifndef THREADMASTER_PARALLELPOSIX_H
 #define THREADMASTER_PARALLELPOSIX_H
 
-//#define _OPEN_THREADS
-#define _UNIX03_THREADS
+#include <time.h>
+
 #include <pthread.h>
 #include "../ThreadMaster.h"
 

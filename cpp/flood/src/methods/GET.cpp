@@ -1,6 +1,5 @@
 #include "../../include/methods/GET.h"
 
-
 GET::GET(string address, uint16_t port)
 	:TCPFlood(address, port)
 	, requestRawPathQS("/") // TODO: find out parsing similar to Python's YARL
@@ -32,8 +31,9 @@ void GET::enable()
 void GET::run()
 {
 	if(flood::State::READY != this->getState())
+	{
 		return;
-		
+	}
 	//this->setState(flood::State::RUNNING);
 	// it is better to keep connection alive to avoid overhead	
     // https://stackoverflow.com/questions/20599570/is-it-better-to-keep-a-socket-open-for-frequent-requests-or-to-close-the-socket
