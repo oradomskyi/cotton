@@ -1,6 +1,8 @@
 #ifndef THREADMASTER_PARALLELPOSIX_H
 #define THREADMASTER_PARALLELPOSIX_H
 
+#define NANOSLEEP_TIMEOUT_NS 500
+
 #include <time.h>
 
 #include <pthread.h>

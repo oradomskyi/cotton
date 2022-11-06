@@ -52,7 +52,7 @@ void* parallelposix::start_n_floods(void* argsPtr)
     	// pthread cancel points 
     	//
     	// https://man7.org/linux/man-pages/man7/pthreads.7.html
-    	nanosleep((const struct timespec[]){{0, 500L}}, NULL); // sleep for a half of a microsecond
+    	nanosleep((const struct timespec[]){{0, NANOSLEEP_TIMEOUT_NS}}, NULL); // sleep for a half of a microsecond
     	
     	try{
     		for(int i = args.from; i < args.to; i++)    
@@ -91,7 +91,7 @@ void* parallelposix::master_n_floods(void* args)
     
     for(int i_flood=0, i_thread=0; i_thread<n_threads; i_flood += n_floods_per_thread, i_thread++)
     {  
-    	nanosleep((const struct timespec[]){{0, 500L}}, NULL); // sleep for a half of a microsecond
+    	nanosleep((const struct timespec[]){{0, NANOSLEEP_TIMEOUT_NS}}, NULL); // sleep for a half of a microsecond
     	
         _this->getThreadArgs()->at(i_thread).from 	= i_flood;
         _this->getThreadArgs()->at(i_thread).to   	= min(i_flood+n_floods_per_thread, sz_floods);

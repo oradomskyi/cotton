@@ -115,8 +115,8 @@ network::Result SocketGLIBC::Connect()
   					
         			do 
         			{ 
-           				tv.tv_sec = 1; 
-           				tv.tv_usec = 0; 
+           				tv.tv_sec = 0; 
+           				tv.tv_usec = this->connect_timeout_us; 
            				FD_ZERO(&myset); 
            				FD_SET(this->m_socket, &myset); 
            				res = select(this->m_socket+1, NULL, &myset, NULL, &tv); 
