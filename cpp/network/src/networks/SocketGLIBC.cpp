@@ -49,12 +49,12 @@ network::Result SocketGLIBC::Create()
     long arg;
     // Set non-blocking 
   	if( (arg = fcntl(this->m_socket, F_GETFL, NULL)) < 0) { 
-     	//fprintf(stderr, "Error fcntl(..., F_GETFL) (%s)\n", strerror(errno)); 
+     	fprintf(stderr, "Error fcntl(..., F_GETFL) (%s)\n", strerror(errno)); 
      	//exit(0); 
   	} 
   	arg |= O_NONBLOCK; 
   	if( fcntl(this->m_socket, F_SETFL, arg) < 0) { 
-     	//fprintf(stderr, "Error fcntl(..., F_SETFL) (%s)\n", strerror(errno)); 
+     	fprintf(stderr, "Error fcntl(..., F_SETFL) (%s)\n", strerror(errno)); 
      	//exit(0); 
   	} 
   
@@ -67,7 +67,9 @@ network::Result SocketGLIBC::Create()
 network::Result SocketGLIBC::Resolve()
 {
     cout << this->state << this->m_socket << "SocketGLIBC::Resolve()" << endl;
-
+		try
+        {
+        
 	struct hostent* hostinfo = gethostbyname (this->address.c_str());
 	cout<<"host addr " << this->address << ", h_name " << hostinfo->h_name<< " port "<<this->port<< endl;
   	if (hostinfo == nullptr)
@@ -75,13 +77,30 @@ network::Result SocketGLIBC::Resolve()
 		cout<<"Unknown host " << this->address << endl;
         return network::Result::RESULT_ERROR;
     }
-
-	this->m_servername.sin_addr = *(struct in_addr *) hostinfo->h_addr;
+    
+    	this->m_servername.sin_addr = *(struct in_addr *) hostinfo->h_addr;
 
 	this->state = network::State::HOST_RESOLVED;
 
     cout << "ok resolved" << this->m_socket << endl;
     return network::Result::RESULT_OK;
+    
+        } 
+        // https://forums.opensuse.org/showthread.php/450418-pthread_exit-c-and-FATAL-exception-not-rethrown
+        catch (abi::__forced_unwind&)
+        {	
+        	printf("%d ", this->m_socket);
+         	printf("SocketGLIBC::Connect() forced unwind, shutting down \n");
+        	throw;
+        }
+        catch(...)
+        {
+  			cout << "SocketGLIBC::Resolve() failed :( " << endl;
+			return network::Result::RESULT_ERROR;
+        }
+        
+  			cout << "SocketGLIBC::Resolve() failed :( " << endl;
+			return network::Result::RESULT_ERROR;
 }
 
 network::Result SocketGLIBC::Connect()
@@ -105,7 +124,7 @@ network::Result SocketGLIBC::Connect()
  			{ 
      			if (errno == EINPROGRESS)
      			{ 
-        			//fprintf(stderr, "EINPROGRESS in connect() - selecting\n"); 
+        			fprintf(stderr, "EINPROGRESS in connect() - selecting\n"); 
         
         			fd_set myset; 
   					struct timeval tv; 
@@ -122,7 +141,8 @@ network::Result SocketGLIBC::Connect()
            				res = select(this->m_socket+1, NULL, &myset, NULL, &tv); 
            				if (res < 0 && errno != EINTR)
            				{ 
-              				//fprintf(stderr, "Error connecting %d - %s\n", errno, strerror(errno)); 
+              				fprintf(stderr, "Error connecting %d - %s\n", errno, strerror(errno)); 
+              				break; 
               				//exit(0); 
            				} 
           				else if (res > 0)
@@ -131,20 +151,23 @@ network::Result SocketGLIBC::Connect()
               				lon = sizeof(int); 
               				if (getsockopt(this->m_socket, SOL_SOCKET, SO_ERROR, (void*)(&valopt), &lon) < 0) 
               				{ 
-                 				//fprintf(stderr, "Error in getsockopt() %d - %s\n", errno, strerror(errno)); 
+                 				fprintf(stderr, "Error in getsockopt() %d - %s\n", errno, strerror(errno)); 
+                 				break; 
                  				//exit(0); 
               				} 
               				// Check the value returned... 
               				if (valopt)
               				{ 
-                 				//fprintf(stderr, "Error in delayed connection() %d - %s\n", valopt, strerror(valopt) ); 
+                 				fprintf(stderr, "Error in delayed connection() %d - %s\n", valopt, strerror(valopt) ); 
+                 				break; 
                  				//exit(0); 
               				} 
               				break; 
            				} 
            				else
            				{ 
-              				//fprintf(stderr, "Timeout in select() - Cancelling!\n"); 
+              				fprintf(stderr, "Timeout in select() - Cancelling!\n"); 
+              				break; 
               				//exit(0); 
            				} 
         			}
@@ -152,7 +175,8 @@ network::Result SocketGLIBC::Connect()
      			} // if (errno == EINPROGRESS) 
      			else
      			{ 
-        			//fprintf(stderr, "Error connecting %d - %s\n", errno, strerror(errno)); 
+        			fprintf(stderr, "Error connecting %d - %s\n", errno, strerror(errno)); 
+        			
         			//exit(0); 
      			} 
   			} // if (err < 0)
@@ -167,7 +191,7 @@ network::Result SocketGLIBC::Connect()
         // https://forums.opensuse.org/showthread.php/450418-pthread_exit-c-and-FATAL-exception-not-rethrown
         catch (abi::__forced_unwind&)
         {	
-        	//printf("%d ", this->m_socket);
+        	printf("%d ", this->m_socket);
          	printf("SocketGLIBC::Connect() forced unwind, shutting down \n");
         	throw;
         }

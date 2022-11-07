@@ -15,12 +15,17 @@ protected:
 	virtual void initNetwork(){};
 	void setState(flood::State new_state) { this->state = new_state; };
 public:
-	Flood(string address, uint16_t port);
+	Flood(const string& address, const uint16_t& port);
 	~Flood();
+	
+	void enable(){};
+	void run(){};
+	void disable(){};
 	
 	Target* getTarget(); // let's keep it modifyable to change it's proxy
 	Network* getNetworkPtr(); // change to const if there would be nothing to change in the Network object
     flood::State getState() { return this->state; };
+    flood::RequestType getType() { return flood::RequestType::NONE; };
 };
 
 #endif

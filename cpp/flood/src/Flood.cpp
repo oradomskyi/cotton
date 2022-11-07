@@ -1,6 +1,6 @@
 #include "../include/Flood.h"
 
-Flood::Flood(string address, uint16_t port)
+Flood::Flood(const string& address, const uint16_t& port)
 	: target(address, port)
     , networkPtr(nullptr)
     , state(flood::State::ERROR)

@@ -1,6 +1,6 @@
 #include "../../include/methods/GET.h"
 
-GET::GET(string address, uint16_t port)
+GET::GET(const string& address, const uint16_t& port)
 	:TCPFlood(address, port)
 	, requestRawPathQS("/") // TODO: find out parsing similar to Python's YARL
 	, requestBody("")
@@ -13,11 +13,21 @@ GET::GET(string address, uint16_t port)
 	
 	this->initNetwork();
 
-	this->getNetworkPtr()->Create();
-    if(network::State::CREATED == this->getNetworkPtr()->getState())
+            if(network::Result::RESULT_OK == this->getNetworkPtr()->Create()) {
+                if(network::Result::RESULT_OK == this->getNetworkPtr()->Resolve()) {
+                    if(network::Result::RESULT_OK == this->getNetworkPtr()->Connect()) {
+                        //this->getNetworkPtr()->Write(this->header);
+                        this->setState(flood::State::READY);
+        				return;
+                    } else {}
+                } else {}
+            } else {}
+            
+	//this->getNetworkPtr()->Create();
+    //if(network::State::CREATED == this->getNetworkPtr()->getState())
 	{
-        this->setState(flood::State::READY);
-        return;
+    //    this->setState(flood::State::READY);
+    //    return;
     }
 
     this->setState(flood::State::ERROR);
@@ -42,27 +52,27 @@ void GET::run()
     switch(this->getNetworkPtr()->getState())    
     {
         case(network::State::ERROR): {
-            if(network::Result::RESULT_OK == this->getNetworkPtr()->Create()) {
-                if(network::Result::RESULT_OK == this->getNetworkPtr()->Resolve()) {
-                    if(network::Result::RESULT_OK == this->getNetworkPtr()->Connect()) {
-                        this->getNetworkPtr()->Write(this->header);
-                    } else {}
-                } else {}
-            } else {}
+            //if(network::Result::RESULT_OK == this->getNetworkPtr()->Create()) {
+            //    if(network::Result::RESULT_OK == this->getNetworkPtr()->Resolve()) {
+            //        if(network::Result::RESULT_OK == this->getNetworkPtr()->Connect()) {
+            //            this->getNetworkPtr()->Write(this->header);
+            //        } else {}
+            //    } else {}
+            //} else {}
             break;
         }
         case(network::State::CREATED): {
-            if(network::Result::RESULT_OK == this->getNetworkPtr()->Resolve()) {
-                if(network::Result::RESULT_OK == this->getNetworkPtr()->Connect()) {
-                    this->getNetworkPtr()->Write(this->header);
-                } else {}
-            } else {}
+            //if(network::Result::RESULT_OK == this->getNetworkPtr()->Resolve()) {
+            //    if(network::Result::RESULT_OK == this->getNetworkPtr()->Connect()) {
+            //        this->getNetworkPtr()->Write(this->header);
+            //    } else {}
+            //} else {}
             break;
         }
         case(network::State::HOST_RESOLVED): {
-                if(network::Result::RESULT_OK == this->getNetworkPtr()->Connect()) {
-                    this->getNetworkPtr()->Write(this->header);
-                } else {}
+            //    if(network::Result::RESULT_OK == this->getNetworkPtr()->Connect()) {
+            //        this->getNetworkPtr()->Write(this->header);
+            //    } else {}
             break;
         }
         case(network::State::CONNECTED): {

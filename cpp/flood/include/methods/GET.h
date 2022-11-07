@@ -15,12 +15,12 @@ private:
 	void initNetwork() override;
 
 public:
-	GET(std::string address, uint16_t port);
+	GET(const string& address, const uint16_t& port);
 	
-	void enable();
-	void run();
-	void disable();
-    flood::RequestType getType() { return this->type; };
+	void enable() override;
+	void run() override;
+	void disable() override;
+    flood::RequestType getType() override { return this->type; };
 };
 
 #endif
