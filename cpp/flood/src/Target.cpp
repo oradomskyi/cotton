@@ -1,6 +1,6 @@
 #include "../include/Target.h"
 
-Target::Target(string address, uint16_t port)
+Target::Target(const string& address, const uint16_t& port)
 	: IPPort(address, port) 
 {}
 

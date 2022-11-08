@@ -1,6 +1,6 @@
 #include "../include/TCPFlood.h"
 
-TCPFlood::TCPFlood(string address, uint16_t port)
+TCPFlood::TCPFlood(const string& address, const uint16_t& port)
 	: Flood(address, port)
 	, request("")
 	, header("")

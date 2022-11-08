@@ -9,7 +9,7 @@ class Target : public IPPort
 protected:
 	const Proxy* proxyPtr;
 public:
-	Target(string address, uint16_t port);
+	Target(const string& address, const uint16_t& port);
 	~Target();
 	
 	const Proxy* getProxyPtr() const;

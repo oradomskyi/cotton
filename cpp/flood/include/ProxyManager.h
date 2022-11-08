@@ -61,7 +61,7 @@ private:
 public:
 	static ProxyManager* getInstance();
 	
-	const Proxy& getProxy(string url);
+	const Proxy& getProxy(const string& url);
 	const Proxy& getRandomProxy(); // return link to one of the proxies we have
 	string getRandomIPv4(); // for this one we give away value
 };

@@ -11,7 +11,8 @@ void test_threadmaster_run()
           new GET(ip1, port1)
     };
        
-    Serial s(&v);
+    vector<Flood*>* pV = &v;
+    Serial s(pV);
     
 
     cout << "Serial.getState() = " << s.getState() << endl;
@@ -33,8 +34,9 @@ void test_threadmaster_long_run()
     vector<Flood*> v = { 
           new GET(ip1, port1)
     };
-   
-    Serial s(&v);
+    
+    vector<Flood*>* pV = &v;
+    Serial s(pV);
     for(int i = 0; i < 1000000; i++)
     {
     
@@ -55,7 +57,8 @@ void test_threadmaster_long_run_create_destroy()
     for(int i = 0; i < 1000000; i++)
     {
     
-    Serial s(&v);
+    vector<Flood*>* pV = &v;
+    Serial s(pV);
     s.start();
     s.stop();
     
@@ -69,7 +72,8 @@ void test_threadmaster_init_with_floods()
           new GET(string(ip1), port1)
     };
        
-    Serial s(&v);
+    vector<Flood*>* pV = &v;
+    Serial s(pV);
     s.start();
     s.stop();
 

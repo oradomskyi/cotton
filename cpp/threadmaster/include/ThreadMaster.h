@@ -14,7 +14,7 @@ class ThreadMaster : public ThreadMasterInterface
 protected:
     threadmaster::State state;    
     vector<Flood*>* floodsPtr;
-    void setState(threadmaster::State new_state) { this->state = new_state; };
+    void setState(const threadmaster::State& new_state) { this->state = new_state; };
 
 public:
     ThreadMaster(vector<Flood*>* new_floodsPtr);

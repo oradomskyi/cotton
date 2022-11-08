@@ -13,10 +13,10 @@ protected:
     flood::State state;
 
 	virtual void initNetwork(){};
-	void setState(flood::State new_state) { this->state = new_state; };
+	void setState(const flood::State& new_state) { this->state = new_state; };
 public:
 	Flood(const string& address, const uint16_t& port);
-	~Flood();
+	virtual ~Flood();
 	
 	void enable(){};
 	void run(){};

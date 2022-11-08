@@ -47,7 +47,7 @@ private:
     
 public:
     ParallelPosix(vector<Flood*>* new_floodsPtr);
-    ParallelPosix(vector<Flood*>* new_floodsPtr, int n_threads);
+    ParallelPosix(vector<Flood*>* new_floodsPtr, const int& n_threads);
     ~ParallelPosix();
 
     void start();

@@ -1,6 +1,7 @@
 #include "../include/tests_threadmaster.h"
 
 static const string ip1 = "192.168.56.1";
+static const int port1 = 65123;
 
 static const vector<string> targets = {
   "www-dev.roseltorg.ru"
@@ -51,10 +52,13 @@ void test_parallelposix_startstop()
 	
 	//vector<Flood> floods;
 	vector<Flood*> floodsPtrs;
-	for(const string& s : targets)
+    vector<Flood*>* pFloodsPtrs = &floodsPtrs;
+	
+    int n = 0;
+    for(const string& s : targets)
 	{
 		cout << "making " << s << endl;
-		Flood* flood = new GET(s, 80);
+		Flood* flood = new GET(ip1, port1 + n++);
 		//if(flood::State::READY == flood->getState())
 		floodsPtrs.push_back(std::move(flood));
 	}
@@ -63,15 +67,15 @@ void test_parallelposix_startstop()
 	for(auto f : floodsPtrs)
 		cout << f->getTarget()->getAddress() << endl;
 
-
-    ParallelPosix s(&floodsPtrs, 2);
+    int n_threads = 2;
+    ParallelPosix s(pFloodsPtrs, n_threads);
     
     cout << "ParallelPosix.getState() = " << s.getState() << endl;
     cout << "ParallelPosix.getType() = " << s.getType() << endl;
     
     cout << "ParallelPosix.start() = " << endl;    
     s.start();
-    sleep(60);
+    sleep(10);
     sleep(sleep_delay_10s);
     /*
      sleep(sleep_delay_10s);
@@ -106,5 +110,12 @@ void test_parallelposix_startstop()
     cout << "ParallelPosix.stop() = " << endl;
     s.stop(); sleep(sleep_delay_10s);
     */
+
+    for(auto f : floodsPtrs)
+    {
+        delete f;
+    }
+    pFloodsPtrs->clear();
+    
     cout << "ok"<<endl;
 }

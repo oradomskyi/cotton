@@ -19,7 +19,7 @@ protected:
 	void createRequest(flood::RequestType reqestType, const string& qsPathRaw, const string& body);
 	
 public:
-	TCPFlood(string address, uint16_t port);
+	TCPFlood(const string& address, const uint16_t& port);
 	
 	const string& getHeader() const;
 	const string& getRequest() const;

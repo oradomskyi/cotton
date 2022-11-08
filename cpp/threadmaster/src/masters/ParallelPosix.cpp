@@ -7,6 +7,8 @@ using std::endl;
 // https://www.cs.cmu.edu/afs/cs/academic/class/15492-f07/www/pthreads.html
 // https://www.thegeekstuff.com/2012/05/c-mutex-examples/
 
+//pthread_mutex_t ParallelPosix_lock = PTHREAD_MUTEX_INITIALIZER;
+
 ParallelPosix::ParallelPosix(vector<Flood*>* new_floodsPtr)
     : ThreadMaster(new_floodsPtr)
     , n_threads(1)
@@ -19,7 +21,7 @@ ParallelPosix::ParallelPosix(vector<Flood*>* new_floodsPtr)
     this->setState(threadmaster::State::READY);
 }
 
-ParallelPosix::ParallelPosix(vector<Flood*>* new_floodsPtr, int new_n_threads)
+ParallelPosix::ParallelPosix(vector<Flood*>* new_floodsPtr, const int& new_n_threads)
     : ThreadMaster(new_floodsPtr)
     , n_threads(new_n_threads)
     , sz_floods(new_floodsPtr->size())
@@ -142,15 +144,17 @@ void ParallelPosix::stop()
         cout << "ParallelPosix is on hold" <<endl;
         return;
     }
-
+    //pthread_mutex_lock(&ParallelPosix_lock);
     for(pthread_t thread: this->threads)
     {	
+        
     	pthread_cancel(thread);
+        
     	//cout << err << " ParallelPosix::stop() pthread_cancel() worker " << thread <<endl;
     }
 
     pthread_cancel(this->master_thread);
-    
+    //pthread_mutex_unlock(&ParallelPosix_lock);
     //cout << err << " ParallelPosix::stop() pthread_cancel() master " << this->master_thread <<endl;
    
     cout << "end of ParallelPosix::stop()" << endl;

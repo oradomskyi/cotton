@@ -13,7 +13,7 @@ class Network : public NetworkInterface
 {
 protected:
 	network::State state;
-	void setState(network::State new_state) { this->state = new_state; };
+	void setState(const network::State& new_state) { this->state = new_state; };
 
 public:
 	Network();

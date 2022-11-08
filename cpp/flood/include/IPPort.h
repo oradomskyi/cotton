@@ -19,7 +19,7 @@ public:
 		,port(0)
 	{};
 
-	IPPort(string address, uint16_t port)
+	IPPort(const string& address, const uint16_t& port)
 		:address(address)
 		,port(port)
 	{};

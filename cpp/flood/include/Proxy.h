@@ -6,7 +6,7 @@
 class Proxy : public IPPort
 {
 public:
-	Proxy(string address, uint16_t port)
+	Proxy(const string& address, const uint16_t& port)
 		:IPPort(address, port)
 	{};
 	
