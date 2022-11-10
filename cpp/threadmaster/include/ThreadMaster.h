@@ -21,6 +21,7 @@ public:
     virtual ~ThreadMaster();
 
     threadmaster::State getState() { return this->state; };
+	vector<Flood*>* getFloodsPtr() { return this->floodsPtr; };
 };
 
 #endif

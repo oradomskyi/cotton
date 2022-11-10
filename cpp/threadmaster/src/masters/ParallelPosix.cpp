@@ -17,7 +17,7 @@ ParallelPosix::ParallelPosix(vector<Flood*>* new_floodsPtr)
     , threads(vector<pthread_t>(n_threads))
     , thread_args(vector<parallelposix::thread_args>(n_threads))
 {
-    this->n_threads = 2; // todo obtain from the system or from the settings
+    //this->n_threads = 2; // todo obtain from the system or from the settings
     this->setState(threadmaster::State::READY);
 }
 

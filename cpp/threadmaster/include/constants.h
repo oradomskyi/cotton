@@ -14,8 +14,9 @@ enum State {
 
 enum Type {
 	  SERIAL
-    , PARALLEL_TYPE1
-    , PARALLEL_TYPE2
+    , PARALLEL_POSIX
+    , PARALLEL_BOOSTFIBER
+	, NONE
 };
 
 } // threadmaster

@@ -3,6 +3,10 @@
 CC := g++
 CFLAGS = -Wall -W -Werror -O0 -std=c++14 -pthread
 
+#DIR_BOOST = ../../boost_1_80_0/
+DIR_BOOST_INCLUDE = 3rdParty/boost/include/
+DIR_BOOST_LIB = 3rdParty/lib/
+
 DIR_SRC_FLOOD = flood/src/
 DIR_SRC_FLOOD_METHODS = flood/src/methods/
 DIR_SRC_NETWORK = network/src/
@@ -17,4 +21,4 @@ TARGET = tool
 
 all: $(TARGET)
 $(TARGET): main.cpp $(SRC_ALL)
-	$(CC) $(CFLAGS) -o $(TARGET) main.cpp $(SRC_ALL)
+	$(CC) -I $(DIR_BOOST_INCLUDE) -L $(DIR_BOOST_LIB) $(CFLAGS) -o $(TARGET) main.cpp $(SRC_ALL)

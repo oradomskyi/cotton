@@ -38,7 +38,7 @@ namespace parallelposix
 class ParallelPosix : public ThreadMaster
 {
 private:
-    static const threadmaster::Type type = threadmaster::Type::PARALLEL_TYPE1;
+    static const threadmaster::Type type = threadmaster::Type::PARALLEL_POSIX;
     int n_threads;
     int sz_floods;
     pthread_t master_thread;
@@ -57,7 +57,7 @@ public:
     vector<pthread_t>* getThreads() {return &this->threads; };
     vector<parallelposix::thread_args>* getThreadArgs() {return &this->thread_args; };
     int getNThreads() { return this->n_threads; };
-    vector<Flood*>* getFloodsPtr() { return this->floodsPtr; };
+    
 };
 
 #endif

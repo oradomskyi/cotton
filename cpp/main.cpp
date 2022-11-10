@@ -12,7 +12,9 @@ int main()
     //test_threadmaster_run();
     //test_threadmaster_long_run_create_destroy();
     //test_threadmaster_long_run();
-    test_parallelposix_startstop();
+    //test_parallelposix_startstop();
+	
+	test_parallelboostfiber_include_boost();
 
 	return 0;
 }
