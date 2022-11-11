@@ -39,15 +39,14 @@ class ParallelPosix : public ThreadMaster
 {
 private:
     static const threadmaster::Type type = threadmaster::Type::PARALLEL_POSIX;
-    int n_threads;
     int sz_floods;
     pthread_t master_thread;
     vector<pthread_t> threads;
     vector<parallelposix::thread_args> thread_args;
     
 public:
-    ParallelPosix(vector<Flood*>* new_floodsPtr);
-    ParallelPosix(vector<Flood*>* new_floodsPtr, const int& n_threads);
+    ParallelPosix(vector<Flood*>* _floodsPtr);
+    ParallelPosix(vector<Flood*>* _floodsPtr, int _n_threads);
     ~ParallelPosix();
 
     void start();

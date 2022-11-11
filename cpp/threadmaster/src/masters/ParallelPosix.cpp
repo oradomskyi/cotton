@@ -9,28 +9,21 @@ using std::endl;
 
 //pthread_mutex_t ParallelPosix_lock = PTHREAD_MUTEX_INITIALIZER;
 
-ParallelPosix::ParallelPosix(vector<Flood*>* new_floodsPtr)
-    : ThreadMaster(new_floodsPtr)
-    , n_threads(1)
-    , sz_floods(new_floodsPtr->size())
+ParallelPosix::ParallelPosix(vector<Flood*>* _floodsPtr)
+    : ThreadMaster(_floodsPtr)
+    , sz_floods(_floodsPtr->size())
     , master_thread(0)
     , threads(vector<pthread_t>(n_threads))
     , thread_args(vector<parallelposix::thread_args>(n_threads))
-{
-    //this->n_threads = 2; // todo obtain from the system or from the settings
-    this->setState(threadmaster::State::READY);
-}
+{}
 
-ParallelPosix::ParallelPosix(vector<Flood*>* new_floodsPtr, const int& new_n_threads)
-    : ThreadMaster(new_floodsPtr)
-    , n_threads(new_n_threads)
-    , sz_floods(new_floodsPtr->size())
+ParallelPosix::ParallelPosix(vector<Flood*>* _floodsPtr, int _n_threads)
+    : ThreadMaster(_floodsPtr, _n_threads)
+    , sz_floods(_floodsPtr->size())
     , master_thread(0)
-    , threads(vector<pthread_t>(new_n_threads))
-    , thread_args(vector<parallelposix::thread_args>(new_n_threads))
-{
-    this->setState(threadmaster::State::READY);
-}
+    , threads(vector<pthread_t>(_n_threads))
+    , thread_args(vector<parallelposix::thread_args>(_n_threads))
+{}
 
 ParallelPosix::~ParallelPosix()
 {}
