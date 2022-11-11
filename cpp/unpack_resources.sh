@@ -1,3 +1,4 @@
 mkdir 3rdParty
 
-unzip ../resources/3rdParty/boost_1.18.0_fiber_cpp11_binaries -d 3rdParty/boost/
+unzip ../resources/3rdParty/boost_1.18.0_all_cpp11_include -d 3rdParty/boost/
+unzip ../resources/3rdParty/boost_1.18.0_all_cpp11_lib_static -d 3rdParty/boost/
