@@ -2,7 +2,7 @@
 
 CC := g++
 CFLAGS = -Wall -W -Werror -O0 -std=c++14 -pthread
-BOOSTFLAGS = -lboost_coroutine -lboost_context  -lboost_system
+BOOSTFLAGS = -lboost_coroutine -lboost_context  -lboost_system -lboost_fiber
 
 DIR_BOOST_INCLUDE = ./3rdParty/boost/include/
 DIR_BOOST_LIB = ./3rdParty/boost/lib/

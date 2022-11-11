@@ -11,6 +11,7 @@ public:
 	virtual void disable() = 0;
     virtual flood::RequestType getType() = 0;
 	virtual flood::State getState() = 0;
+    virtual void operator()() = 0;
 };
 
 #endif

@@ -5,6 +5,7 @@
 #include "../ThreadMaster.h"
 
 using boost::fibers::fiber;
+using std::ref;
 
 class ParallelBoostFiber : public ThreadMaster
 {

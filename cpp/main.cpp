@@ -14,7 +14,9 @@ int main()
     //test_threadmaster_long_run();
     //test_parallelposix_startstop();
 	
-	test_parallelboostfiber_include_boost();
+	//test_parallelboostfiber_include_boost();
+    
+    test_parallelboostfiber_run();
 
 	return 0;
 }

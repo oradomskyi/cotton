@@ -3,14 +3,13 @@
 
 #include <iostream>
 
-//#include <boost/lambda/lambda.hpp>
-#include <iterator>
-#include <algorithm>
+#include "../../threadmaster/include/masters/threadmasters.h"
 
 using std::string;
 using std::cout;
 using std::endl;
 
 void test_parallelboostfiber_include_boost();
+void test_parallelboostfiber_run();
 
 #endif

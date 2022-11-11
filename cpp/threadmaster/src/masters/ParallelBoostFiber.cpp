@@ -23,12 +23,18 @@ ParallelBoostFiber::~ParallelBoostFiber()
 
 void ParallelBoostFiber::start()
 {
-    if(threadmaster::State::RUNNING == this->getState())
+    //if(threadmaster::State::RUNNING == this->getState())
     {
-        cout << "ParallelBoostFiber already running" <<endl;
-        return;
+    //    cout << "ParallelBoostFiber already running" <<endl;
+    //    return;
     }
-  	
+    for(Flood* flood : *(this->getFloodsPtr()))
+    {
+        //(*flood)();
+        fiber f(ref(*flood));
+        f.detach();
+    }
+
     this->setState(threadmaster::State::RUNNING);
 }
 

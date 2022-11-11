@@ -12,15 +12,16 @@ private:
 
 	// it is up to a particular method to init proper instance of a network
 	// TCP or UDP in case of glibc Sockets
-	void initNetwork() override;
+	void initNetwork();
 
 public:
 	GET(const string& address, const uint16_t& port);
 	
-	void enable() override;
-	void run() override;
-	void disable() override;
-    flood::RequestType getType() override { return this->type; };
+	void enable();
+	void run() ;
+	void disable() ;
+    flood::RequestType getType() { return this->type; };
+    void operator()() { run(); };
 };
 
 #endif

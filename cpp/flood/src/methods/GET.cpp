@@ -1,7 +1,7 @@
 #include "../../include/methods/GET.h"
 
 GET::GET(const string& address, const uint16_t& port)
-	:TCPFlood(address, port)
+	: TCPFlood(address, port)
 	, requestRawPathQS("/") // TODO: find out parsing similar to Python's YARL
 	, requestBody("")
 {	
@@ -15,11 +15,11 @@ GET::GET(const string& address, const uint16_t& port)
 
             if(network::Result::RESULT_OK == this->getNetworkPtr()->Create()) {
                 if(network::Result::RESULT_OK == this->getNetworkPtr()->Resolve()) {
-                    if(network::Result::RESULT_OK == this->getNetworkPtr()->Connect()) {
+                    //if(network::Result::RESULT_OK == this->getNetworkPtr()->Connect()) {
                         //this->getNetworkPtr()->Write(this->header);
                         this->setState(flood::State::READY);
         				return;
-                    } else {}
+                    //} else {}
                 } else {}
             } else {}
             
@@ -40,6 +40,8 @@ void GET::enable()
 
 void GET::run()
 {
+    printf("GET::run()");
+    cout<<this->getState() << ' ' << this->getNetworkPtr()->getState() << endl;
 	if(flood::State::READY != this->getState())
 	{
 		return;
@@ -70,9 +72,9 @@ void GET::run()
             break;
         }
         case(network::State::HOST_RESOLVED): {
-            //    if(network::Result::RESULT_OK == this->getNetworkPtr()->Connect()) {
-            //        this->getNetworkPtr()->Write(this->header);
-            //    } else {}
+                if(network::Result::RESULT_OK == this->getNetworkPtr()->Connect()) {
+                   this->getNetworkPtr()->Write(this->header);
+                } else {}
             break;
         }
         case(network::State::CONNECTED): {
