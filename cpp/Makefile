@@ -5,7 +5,7 @@ CFLAGS = -Wall -W -Werror -O0 -std=c++14 -pthread
 
 #DIR_BOOST = ../../boost_1_80_0/
 DIR_BOOST_INCLUDE = 3rdParty/boost/include/
-DIR_BOOST_LIB = 3rdParty/lib/
+DIR_BOOST_LIB = 3rdParty/boost/lib/
 
 DIR_SRC_FLOOD = flood/src/
 DIR_SRC_FLOOD_METHODS = flood/src/methods/
