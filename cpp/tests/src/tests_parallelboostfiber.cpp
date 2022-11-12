@@ -55,7 +55,7 @@ void test_parallelboostfiber_run()
    cout << "test_parallelboostfiber_run" << endl;
     
 
-    unsigned int sleep_delay_10s = 5;
+    unsigned int sleep_delay_5s = 5;
 
 	vector<Flood*> floodsPtrs;
     vector<Flood*>* pFloodsPtrs = &floodsPtrs;
@@ -81,10 +81,22 @@ void test_parallelboostfiber_run()
     
     cout << "ParallelPosix.start() = " << endl;    
     s.start();
-    sleep(sleep_delay_10s);
+
+    cout << "test_long_run" << endl;
+
+    for(int i = 0; i < 1000000; i++)
+    {
+    
+    ParallelBoostFiber s(pFloodsPtrs, n_threads);
     s.start();
-    sleep(sleep_delay_10s);
+    s.stop();
+    
+    }
+
+    sleep(sleep_delay_5s);
     s.start();
-    sleep(sleep_delay_10s);
+    sleep(sleep_delay_5s);
+    s.start();
+    sleep(sleep_delay_5s);
     
 }

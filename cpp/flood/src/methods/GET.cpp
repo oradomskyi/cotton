@@ -92,5 +92,5 @@ void GET::disable()
 
 void GET::initNetwork()
 {
-	this->networkPtr = new SocketGLIBC(this->getTarget()->getAddress(), this->getTarget()->getPort());
+	this->networkPtr = new BoostAsio(this->getTarget()->getAddress(), this->getTarget()->getPort());
 }

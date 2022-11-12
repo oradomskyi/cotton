@@ -3,5 +3,6 @@
 
 #include "NoNetwork.h"
 #include "SocketGLIBC.h"
+#include "BoostAsio.h"
 
 #endif

@@ -21,7 +21,7 @@ public:
 	void run() ;
 	void disable() ;
     flood::RequestType getType() { return this->type; };
-    void operator()() { run(); };
+    void operator()() {  run(); };
 };
 
 #endif

@@ -21,6 +21,7 @@ enum Type
 {
       NO_NETWORK
     , SOCKET_GLIBC
+    , BOOST_ASIO
     , OTHER
 };
 
