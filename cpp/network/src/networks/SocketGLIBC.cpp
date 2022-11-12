@@ -142,7 +142,7 @@ network::Result SocketGLIBC::Connect()
            				if (res < 0 && errno != EINTR)
            				{ 
               				fprintf(stderr, "Error connecting %d - %s\n", errno, strerror(errno)); 
-              				break; 
+              				return network::Result::RESULT_ERROR;
               				//exit(0); 
            				} 
           				else if (res > 0)
@@ -152,14 +152,14 @@ network::Result SocketGLIBC::Connect()
               				if (getsockopt(this->m_socket, SOL_SOCKET, SO_ERROR, (void*)(&valopt), &lon) < 0) 
               				{ 
                  				fprintf(stderr, "Error in getsockopt() %d - %s\n", errno, strerror(errno)); 
-                 				break; 
-                 				//exit(0); 
+                 				return network::Result::RESULT_ERROR;
+                                //exit(0);
               				} 
               				// Check the value returned... 
               				if (valopt)
               				{ 
                  				fprintf(stderr, "Error in delayed connection() %d - %s\n", valopt, strerror(valopt) ); 
-                 				break; 
+			                    return network::Result::RESULT_ERROR;
                  				//exit(0); 
               				} 
               				break; 
@@ -167,7 +167,7 @@ network::Result SocketGLIBC::Connect()
            				else
            				{ 
               				fprintf(stderr, "Timeout in select() - Cancelling!\n"); 
-              				break; 
+        			        return network::Result::RESULT_ERROR;
               				//exit(0); 
            				} 
         			}
@@ -176,7 +176,7 @@ network::Result SocketGLIBC::Connect()
      			else
      			{ 
         			fprintf(stderr, "Error connecting %d - %s\n", errno, strerror(errno)); 
-        			
+			        return network::Result::RESULT_ERROR;
         			//exit(0); 
      			} 
   			} // if (err < 0)

@@ -30,7 +30,7 @@ class SocketGLIBC : public Network
 private:
     static const network::Type type = network::Type::SOCKET_GLIBC;
     static const int shutdown_mode = 2; // todo move to constants // stop both reception and transmission
-	static const int connect_timeout_us = 1000000; // timeout for waiting the connect() in microseconds 
+	static const int connect_timeout_us = 2000000; // timeout for waiting the connect() in microseconds 
 	string address;
 	uint16_t port;
     int m_socket;

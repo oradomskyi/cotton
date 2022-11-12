@@ -55,7 +55,7 @@ void test_parallelboostfiber_run()
    cout << "test_parallelboostfiber_run" << endl;
     
 
-    unsigned int sleep_delay_10s = 1;
+    unsigned int sleep_delay_10s = 5;
 
 	vector<Flood*> floodsPtrs;
     vector<Flood*>* pFloodsPtrs = &floodsPtrs;
@@ -65,8 +65,8 @@ void test_parallelboostfiber_run()
 	{
 		cout << "making " << ip1 << endl;
 		Flood* flood = new GET(ip1, port1 + n++);
-		//if(flood::State::READY == flood->getState())
-		floodsPtrs.push_back(std::move(flood));
+		if(flood::State::READY == flood->getState())
+		    floodsPtrs.push_back(std::move(flood));
 	}
 	
 	cout <<"size floods" << floodsPtrs.size() << endl;

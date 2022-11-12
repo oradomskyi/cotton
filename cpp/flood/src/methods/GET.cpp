@@ -22,14 +22,14 @@ GET::GET(const string& address, const uint16_t& port)
                     //} else {}
                 } else {}
             } else {}
-            
-	//this->getNetworkPtr()->Create();
-    //if(network::State::CREATED == this->getNetworkPtr()->getState())
+	/*
+    this->getNetworkPtr()->Create();
+    if(network::State::CREATED == this->getNetworkPtr()->getState())
 	{
-    //    this->setState(flood::State::READY);
-    //    return;
+        this->setState(flood::State::READY);
+        return;
     }
-
+    */
     this->setState(flood::State::ERROR);
 }
 
@@ -40,8 +40,8 @@ void GET::enable()
 
 void GET::run()
 {
-    printf("GET::run()");
-    cout<<this->getState() << ' ' << this->getNetworkPtr()->getState() << endl;
+    //printf("GET::run()");
+    //cout<<this->getState() << ' ' << this->getNetworkPtr()->getState() << endl;
 	if(flood::State::READY != this->getState())
 	{
 		return;
@@ -54,21 +54,21 @@ void GET::run()
     switch(this->getNetworkPtr()->getState())    
     {
         case(network::State::ERROR): {
-            //if(network::Result::RESULT_OK == this->getNetworkPtr()->Create()) {
-            //    if(network::Result::RESULT_OK == this->getNetworkPtr()->Resolve()) {
-            //        if(network::Result::RESULT_OK == this->getNetworkPtr()->Connect()) {
-            //            this->getNetworkPtr()->Write(this->header);
-            //        } else {}
-            //    } else {}
-            //} else {}
+            /*if(network::Result::RESULT_OK == this->getNetworkPtr()->Create()) {
+                if(network::Result::RESULT_OK == this->getNetworkPtr()->Resolve()) {
+                    if(network::Result::RESULT_OK == this->getNetworkPtr()->Connect()) {
+                        this->getNetworkPtr()->Write(this->header);
+                    } else {}
+                } else {}
+            } else {}*/
             break;
         }
         case(network::State::CREATED): {
-            //if(network::Result::RESULT_OK == this->getNetworkPtr()->Resolve()) {
-            //    if(network::Result::RESULT_OK == this->getNetworkPtr()->Connect()) {
-            //        this->getNetworkPtr()->Write(this->header);
-            //    } else {}
-            //} else {}
+            /*if(network::Result::RESULT_OK == this->getNetworkPtr()->Resolve()) {
+                if(network::Result::RESULT_OK == this->getNetworkPtr()->Connect()) {
+                    this->getNetworkPtr()->Write(this->header);
+                } else {}
+            } else {}*/
             break;
         }
         case(network::State::HOST_RESOLVED): {
@@ -82,6 +82,7 @@ void GET::run()
             break;
         }
     }
+    this->setState(flood::State::READY);
 }
 
 void GET::disable()
