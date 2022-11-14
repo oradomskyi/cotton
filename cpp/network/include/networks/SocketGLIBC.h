@@ -36,18 +36,21 @@ private:
     int m_socket;
 	struct sockaddr_in m_servername;
 
-public:
-	SocketGLIBC();
-    SocketGLIBC(const string& address, const uint16_t& port);
-    ~SocketGLIBC();
-
     network::Result Create();
     network::Result Resolve();
     network::Result Connect();
     network::Result Write(const string& data);
     network::Result Disconnect();
     network::Result Shutdown();
+    
+public:
+	SocketGLIBC();
+    SocketGLIBC(const string& address, const uint16_t& port);
+    ~SocketGLIBC();
 
+    network::Result send(const string& buffer);
+    network::Result receive(string& buffer);
+    
     network::Type getType() { return this->type; }; 
 
 	void setAddress(const string& address) { this->address = address; };   // not sure this is a good design decision to have a copy of host and port

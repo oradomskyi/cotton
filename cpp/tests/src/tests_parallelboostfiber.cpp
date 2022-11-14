@@ -82,7 +82,7 @@ void test_parallelboostfiber_run()
     cout << "ParallelPosix.start() = " << endl;    
     s.start();
 
-    cout << "test_long_run" << endl;
+/*    cout << "test_long_run" << endl;
 
     for(int i = 0; i < 1000000; i++)
     {
@@ -92,7 +92,7 @@ void test_parallelboostfiber_run()
     s.stop();
     
     }
-
+*/
     sleep(sleep_delay_5s);
     s.start();
     sleep(sleep_delay_5s);

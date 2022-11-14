@@ -62,7 +62,7 @@ void* parallelposix::start_n_floods(void* argsPtr)
         {
             for(int i = args.from; i < args.to; i++)    
     		{  
-        		args.pFloods->at(i)->getNetworkPtr()->Shutdown();
+        		//args.pFloods->at(i)->getNetworkPtr()->Shutdown(); // obsolete, network class is isolated
          		//printf("%d, start_n_floods forced unwind, calling Shutdown() \n", i);
          	}
         	throw;

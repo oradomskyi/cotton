@@ -13,6 +13,14 @@ SocketGLIBC::SocketGLIBC(const string& address, const uint16_t& port)
 	, port(port)
     , m_socket(network::SocketState::SOCKET_ERROR)
 {
+            if(network::Result::RESULT_OK == this->Create()) {
+                if(network::Result::RESULT_OK == this->Resolve()) {
+                    //if(network::Result::RESULT_OK == this->Connect()) {
+        		    // Que? Do I need to init network here, feels like yes, I am.
+                    //} else {}
+                } else {}
+            } else {}
+
         cout << "SocketGLIBC ctor" << endl;
 }
 
@@ -70,21 +78,20 @@ network::Result SocketGLIBC::Resolve()
 		try
         {
         
-	struct hostent* hostinfo = gethostbyname (this->address.c_str());
-	cout<<"host addr " << this->address << ", h_name " << hostinfo->h_name<< " port "<<this->port<< endl;
-  	if (hostinfo == nullptr)
-    {
-		cout<<"Unknown host " << this->address << endl;
-        return network::Result::RESULT_ERROR;
-    }
+	        struct hostent* hostinfo = gethostbyname (this->address.c_str());
+	        cout<<"host addr " << this->address << ", h_name " << hostinfo->h_name<< " port "<<this->port<< endl;
+  	        if (hostinfo == nullptr)
+            {
+		        cout<<"Unknown host " << this->address << endl;
+                return network::Result::RESULT_ERROR;
+            }
     
-    	this->m_servername.sin_addr = *(struct in_addr *) hostinfo->h_addr;
+    	    this->m_servername.sin_addr = *(struct in_addr *) hostinfo->h_addr;
 
-	this->state = network::State::HOST_RESOLVED;
+        	this->state = network::State::HOST_RESOLVED;
 
-    cout << "ok resolved" << this->m_socket << endl;
-    return network::Result::RESULT_OK;
-    
+            cout << "ok resolved" << this->m_socket << endl;
+            return network::Result::RESULT_OK;
         } 
         // https://forums.opensuse.org/showthread.php/450418-pthread_exit-c-and-FATAL-exception-not-rethrown
         catch (abi::__forced_unwind&)
@@ -99,8 +106,8 @@ network::Result SocketGLIBC::Resolve()
 			return network::Result::RESULT_ERROR;
         }
         
-  			cout << "SocketGLIBC::Resolve() failed :( " << endl;
-			return network::Result::RESULT_ERROR;
+    cout << "SocketGLIBC::Resolve() failed :( " << endl;
+	return network::Result::RESULT_ERROR;
 }
 
 network::Result SocketGLIBC::Connect()
@@ -278,4 +285,51 @@ network::Result SocketGLIBC::Shutdown()
 	
 	cout << this->m_socket <<" SocketGLIBC::Shutdown() OK " << endl;
     return network::Result::RESULT_OK;
+}
+
+network::Result SocketGLIBC::send(const string& buffer)
+{
+    cout << this->state << this->m_socket << " SocketGLIBC Write" << endl;
+
+    // TODO: Refactor this shit
+    switch(this->getState())    
+    {
+        case(network::State::ERROR): {
+            if(network::Result::RESULT_OK == this->Create()) {
+                if(network::Result::RESULT_OK == this->Resolve()) {
+                    if(network::Result::RESULT_OK == this->Connect()) {
+                        this->Write(buffer);
+                    } else {}
+                } else {}
+            } else {}
+            break;
+        }
+        case(network::State::CREATED): {
+            if(network::Result::RESULT_OK == this->Resolve()) {
+                if(network::Result::RESULT_OK == this->Connect()) {
+                    this->Write(buffer);
+                } else {}
+            } else {}
+            break;
+        }
+        case(network::State::HOST_RESOLVED): {
+                if(network::Result::RESULT_OK == this->Connect()) {
+                   this->Write(buffer);
+                } else {}
+            break;
+        }
+        case(network::State::CONNECTED): {
+            this->Write(buffer);
+            break;
+        }
+    }
+    return network::Result::RESULT_OK; // is this a behavior I want to see? maybe add try catch and return error when fails?
+}
+
+network::Result SocketGLIBC::receive(string& buffer)
+{
+    buffer[0];
+    // TODO:
+    // Raise NotImplementedError
+    return network::Result::RESULT_ERROR;
 }
