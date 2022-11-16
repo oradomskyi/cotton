@@ -322,6 +322,8 @@ network::Result SocketGLIBC::send(const string& buffer)
             this->Write(buffer);
             break;
         }
+        default:
+            break;
     }
     return network::Result::RESULT_OK; // is this a behavior I want to see? maybe add try catch and return error when fails?
 }

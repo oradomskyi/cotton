@@ -15,6 +15,8 @@ enum State
   	, CREATED
     , HOST_RESOLVED
 	, CONNECTED
+    , READY
+    , BUSY
 };
 
 enum Type

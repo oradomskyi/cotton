@@ -39,11 +39,9 @@ void GET::run()
 	// it is better to keep connection alive to avoid overhead	
     // https://stackoverflow.com/questions/20599570/is-it-better-to-keep-a-socket-open-for-frequent-requests-or-to-close-the-socket
     
-
     // TODO:
     // Implement proper logic of GET attack method here
     this->getNetworkPtr()->send(this->header);
-
 
     this->setState(flood::State::READY);
 }
@@ -61,5 +59,6 @@ void GET::initNetwork()
 
 void GET::operator()()
 {
-    this->run();
+    if(network::State::CREATED <= this->getNetworkPtr()->getState())
+        this->run();
 }

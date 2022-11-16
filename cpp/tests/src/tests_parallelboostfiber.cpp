@@ -65,10 +65,10 @@ void test_parallelboostfiber_run()
 	{
 		cout << "making " << ip1 << endl;
 		Flood* flood = new GET(ip1, port1 + n++);
-		if(flood::State::READY == flood->getState())
+		//if(flood::State::READY == flood->getState())
 		    floodsPtrs.push_back(std::move(flood));
 	}
-	
+
 	cout <<"size floods" << floodsPtrs.size() << endl;
 	for(auto f : floodsPtrs)
 		cout << f->getTarget()->getAddress() << endl;
@@ -93,6 +93,8 @@ void test_parallelboostfiber_run()
     
     }
 */
+    sleep(sleep_delay_5s);
+    sleep(sleep_delay_5s);
     sleep(sleep_delay_5s);
     s.start();
     sleep(sleep_delay_5s);

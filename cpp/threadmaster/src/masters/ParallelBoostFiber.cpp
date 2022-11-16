@@ -7,15 +7,13 @@ using std::endl;
 void parallelboostfiber::master_fiber_routine(vector<Flood*>* floodsPtr)
 {
     //use_scheduling_algorithm< boost::fibers::algo::work_stealing >(thread::hardware_concurrency());
-    
+    for(int i = 0; i < 10000; i++)
     for(Flood* flood : *floodsPtr)
     {
-        //(*flood)();
         fiber f(ref(*flood));
-        f.detach();
+        f.detach(); // .join() Really?.. BLOCK 'EM ALL
     }
 }
-
 ParallelBoostFiber::ParallelBoostFiber(vector<Flood*>* _floodsPtr)
     : ThreadMaster(_floodsPtr)
 {}
