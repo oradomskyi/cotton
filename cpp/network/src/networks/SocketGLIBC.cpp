@@ -2,15 +2,11 @@
 
 SocketGLIBC::SocketGLIBC()
     : Network()
-	, address("")
-	, port(0)
     , m_socket(network::SocketState::SOCKET_ERROR)
 {}
 
 SocketGLIBC::SocketGLIBC(const string& address, const uint16_t& port)
-    : Network()
-	, address(address)
-	, port(port)
+    : Network(address, port)
     , m_socket(network::SocketState::SOCKET_ERROR)
 {
             if(network::Result::RESULT_OK == this->Create()) {

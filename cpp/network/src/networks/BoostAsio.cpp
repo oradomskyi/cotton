@@ -2,15 +2,10 @@
 
 BoostAsio::BoostAsio()
     : Network()
-	, address("")
-	, port(0)
-{
-}
+{}
 
 BoostAsio::BoostAsio(const string& address, const uint16_t& port)
-    : Network()
-	, address(address)
-	, port(port)
+    : Network(address, port)
 {
     // the io_context is initialised together with members before executing
     // the code below. I believe..

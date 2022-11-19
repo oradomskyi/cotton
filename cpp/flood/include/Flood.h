@@ -12,6 +12,7 @@ protected:
 	Network* networkPtr;
     flood::State state;
 
+protected:
 	virtual void initNetwork(){};
 	void setState(const flood::State& new_state) { this->state = new_state; };
 

@@ -31,11 +31,11 @@ private:
     static const network::Type type = network::Type::SOCKET_GLIBC;
     static const int shutdown_mode = 2; // todo move to constants // stop both reception and transmission
 	static const int connect_timeout_us = 2000000; // timeout for waiting the connect() in microseconds 
-	string address;
-	uint16_t port;
+
     int m_socket;
 	struct sockaddr_in m_servername;
 
+private:
     network::Result Create();
     network::Result Resolve();
     network::Result Connect();

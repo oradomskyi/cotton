@@ -13,9 +13,9 @@ protected:
 	string header;
 
 	string defaultHeader;
-	
-	void setHeader(const string& headers);
-	
+
+protected:
+	void setHeader(const string& headers);	
 	void createRequest(flood::RequestType reqestType, const string& qsPathRaw, const string& body);
 	
 public:

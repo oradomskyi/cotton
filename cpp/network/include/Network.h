@@ -13,12 +13,17 @@ class Network : public NetworkInterface
 {
 protected:
 	network::State state;
-	void setState(const network::State& new_state) { this->state = new_state; };
+	string address;
+	uint16_t port;
+
+protected:
+	void setState(const network::State& new_state);
 
 public:
 	Network();
+    Network(const string& _address, const uint16_t& _port);
 	virtual ~Network();
 
-	network::State getState() { return this->state; };
+	network::State getState();
 };
 #endif
