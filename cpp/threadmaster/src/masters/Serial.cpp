@@ -1,7 +1,7 @@
 #include "../../include/masters/Serial.h"
 
-Serial::Serial(vector<Flood*>* new_floodsPtr)
-    : ThreadMaster(new_floodsPtr)
+Serial::Serial(vector<Flood*>* _floodsPtr)
+    : ThreadMaster(_floodsPtr)
 {
     this->setState(threadmaster::State::READY);
 }

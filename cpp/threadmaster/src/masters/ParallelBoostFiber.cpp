@@ -30,10 +30,10 @@ ParallelBoostFiber::~ParallelBoostFiber()
 
 void ParallelBoostFiber::start()
 {
-    //if(threadmaster::State::RUNNING == this->getState())
+    if(threadmaster::State::RUNNING == this->getState())
     {
-    //    cout << "ParallelBoostFiber already running" <<endl;
-    //    return;
+        cout << "ParallelBoostFiber already running" <<endl;
+        return;
     }
 
     fiber master_fiber(parallelboostfiber::master_fiber_routine, this->getFloodsPtr());

@@ -16,6 +16,7 @@ protected:
     vector<Flood*>* floodsPtr;
 	int n_threads;
 
+protected:
     void setState(const threadmaster::State& new_state) { this->state = new_state; };
 
 public:

@@ -8,7 +8,7 @@ class Serial : public ThreadMaster
 private:
     static const threadmaster::Type type = threadmaster::Type::SERIAL;
 public:
-    Serial(vector<Flood*>* new_floodsPtr);
+    Serial(vector<Flood*>* _floodsPtr);
     ~Serial();
 
     void start();
