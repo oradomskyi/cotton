@@ -52,8 +52,5 @@ public:
     network::Result receive(string& buffer);
     
     network::Type getType() { return this->type; }; 
-
-	void setAddress(const string& address) { this->address = address; };   // not sure this is a good design decision to have a copy of host and port
-	void setPort(const uint16_t& port) { this->port = port; }; // not sure this is a good design decision to have a copy of host and port
 };
 #endif
