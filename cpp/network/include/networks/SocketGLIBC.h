@@ -49,7 +49,7 @@ public:
     ~SocketGLIBC();
 
     network::Result send(const string& buffer);
-    network::Result receive(string& buffer);
+    network::Result receive(string* buffer);
     
     network::Type getType() { return this->type; }; 
 };

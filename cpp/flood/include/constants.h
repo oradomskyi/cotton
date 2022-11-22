@@ -26,6 +26,7 @@ enum RequestType {
 	  GET
 	, RGET
 	, POST
+    , BYPASS
 	, NONE
 };
 
@@ -33,6 +34,7 @@ static const unordered_map<RequestType, string> RequestTypeStr = {
 	  { RequestType::GET  , "GET"  }
 	, { RequestType::RGET , "RGET" }
 	, { RequestType::POST , "POST" }
+    , { RequestType::GET  , "BYPASS"  }
 	, { RequestType::NONE , ""     }
 };
 

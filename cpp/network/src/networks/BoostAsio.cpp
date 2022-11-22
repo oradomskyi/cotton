@@ -1,5 +1,7 @@
 #include "../../include/networks/BoostAsio.h"
 
+// https://www.boost.org/doc/libs/1_78_0/doc/html/boost_asio/example/cpp11/timeouts/async_tcp_client.cpp
+
 BoostAsio::BoostAsio()
     : Network()
 {}
@@ -20,7 +22,7 @@ BoostAsio::BoostAsio(const string& address, const uint16_t& port)
     //cout << this->state  << "BoostAsio::Resolve()" << endl;
 
     // meanwhile endpoint could be assignegned
-    this->endpoints = this->tcp_resolver->resolve(this->address.c_str(), to_string(this->port).c_str());
+    this->endpoints = this->tcp_resolver->resolve(this->address->c_str(), to_string(*(this->port)).c_str());
     
     //cout << "this->endpoints.size() " << this->endpoints.size() << endl;
     if(0 >= this->endpoints.size())
@@ -116,12 +118,18 @@ void BoostAsio::handle_connect(const boost::system::error_code& error,
 }
 
 
-void BoostAsio::handle_write(boost::asio::io_context *_io, network::State *_state)
+void BoostAsio::handle_write()
 {
-    _io->stop();
-    *_state = network::State::READY;
-  }
+    this->io.stop();
+    this->state = network::State::READY;
+}
 
+
+void BoostAsio::handle_read()
+{
+    this->io.stop();
+    this->state = network::State::READY;
+}
 
 network::Result BoostAsio::send(const string& buffer)
 {
@@ -137,20 +145,36 @@ network::Result BoostAsio::send(const string& buffer)
     { 
         this->state = network::State::BUSY;
         //cout << "BoostAsio::send() run_one() A" << this->state << endl; 
-        boost::asio::async_write(*(this->socket), boost::asio::buffer(buffer, buffer.size())
-        , std::bind(&BoostAsio::handle_write, this, &this->io, &this->state));
+        boost::asio::async_write(*(this->socket)
+            , boost::asio::buffer(buffer, buffer.size())
+            , std::bind(&BoostAsio::handle_write, this));
         
-        this->io.run_one();
+        this->io.run();
     }
 
     return network::Result::RESULT_OK;
 }
 
-network::Result BoostAsio::receive(string& buffer)
+network::Result BoostAsio::receive(string* buffer)
 {
-    cout << "BoostAsio::receive()" << endl;
-    buffer[0];
-    cout << this->state  << " BoostAsio Read" << endl;
+    //cout << "BoostAsio::receive()" << this->state << endl;
+    if(this->state == network::State::BUSY)
+        return network::Result::RESULT_ERROR;
+
+    //cout << this->io.stopped() << endl;
+    if(this->io.stopped())
+        this->io.restart();
+
+    // add condition if needed
+    { 
+        this->state = network::State::BUSY;
+        //cout << "BoostAsio::send() run_one() A" << this->state << endl; 
+        boost::asio::async_read(*(this->socket)
+            , boost::asio::buffer(*buffer, buffer->size())
+            , std::bind(&BoostAsio::handle_read, this));
+        
+        this->io.run();
+    }
 
     return network::Result::RESULT_OK;
 }

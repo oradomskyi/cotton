@@ -61,12 +61,17 @@ void test_parallelboostfiber_run()
     vector<Flood*>* pFloodsPtrs = &floodsPtrs;
 	
     int n = 0;
-    for(int i = 0; i < 5; i++)
+    //for(int i = 0; i < 5; i++)
 	{
 		cout << "making " << ip1 << endl;
-		Flood* flood = new GET(ip1, port1 + n++);
-		//if(flood::State::READY == flood->getState())
-		    floodsPtrs.push_back(std::move(flood));
+		Flood* flood0 = new GET(ip1, port1 + n++); 		    floodsPtrs.push_back(std::move(flood0));
+        Flood* flood1 = new GET(ip1, port1 + n++);		    floodsPtrs.push_back(std::move(flood1));
+		Flood* flood2 = new BYPASS(ip1, port1 + n++);		    floodsPtrs.push_back(std::move(flood2));
+		Flood* flood3 = new BYPASS(ip1, port1 + n++);		    floodsPtrs.push_back(std::move(flood3));
+		Flood* flood4 = new GET(ip1, port1 + n++);		    floodsPtrs.push_back(std::move(flood4));
+				
+        //if(flood::State::READY == flood->getState())
+		//    floodsPtrs.push_back(std::move(flood));
 	}
 
 	cout <<"size floods" << floodsPtrs.size() << endl;

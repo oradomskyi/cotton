@@ -29,22 +29,20 @@ private:
     tcp::resolver::results_type endpoints;
     tcp::socket* socket;
 
-    string output_buffer;
-
 private:
     void start_connect(tcp::resolver::results_type::iterator endpoint_iter);
     void handle_connect(const boost::system::error_code& error,
       tcp::resolver::results_type::iterator endpoint_iter);
 
-    void handle_write(boost::asio::io_context *_io, network::State *_state);
-
+    void handle_write();
+    void handle_read();
 public:
 	BoostAsio();
     BoostAsio(const string& address, const uint16_t& port);
     ~BoostAsio();
 
     network::Result send(const string& buffer);
-    network::Result receive(string& buffer);
+    network::Result receive(string* buffer);
     
     network::Type getType() { return this->type; }; 
 };

@@ -2,14 +2,14 @@
 
 Network::Network()
         : state(network::State::ERROR)
-        , address("")
-        , port(0)    
+        , address(nullptr)
+        , port(nullptr)    
 {}
 
 Network::Network(const string& _address, const uint16_t& _port)
         : state(network::State::ERROR)
-        , address(_address)
-        , port(_port)    
+        , address(&_address)
+        , port(&_port)    
 {}
 
 Network::~Network()

@@ -13,8 +13,8 @@ class Network : public NetworkInterface
 {
 protected:
 	network::State state;
-	string address;
-	uint16_t port;
+	const string* const address;
+	const uint16_t* const port;
 
 protected:
 	void setState(const network::State& new_state);

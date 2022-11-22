@@ -20,7 +20,7 @@ public:
     {};
 
     network::Result send(const string& buffer) { buffer[0]; return network::Result::RESULT_ERROR; }; // remove data[0], it is to make compiler not to complain because of unused variable
-    network::Result reveive(string& buffer) { buffer[0]; return network::Result::RESULT_ERROR; };
+    network::Result reveive(string* buffer) { (*buffer)[0]; return network::Result::RESULT_ERROR; };
 
     network::Type getType() { return this->type; }; 
 };

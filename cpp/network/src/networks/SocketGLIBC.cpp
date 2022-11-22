@@ -45,7 +45,7 @@ network::Result SocketGLIBC::Create()
    		    cout << "err SocketGLIBC::Create()" << this->m_socket << endl;
     }
     this->m_servername.sin_family = AF_INET;
-    this->m_servername.sin_port = htons (this->port);
+    this->m_servername.sin_port = htons (*(this->port));
     	
     // the below is taken from here
     // 
@@ -74,11 +74,11 @@ network::Result SocketGLIBC::Resolve()
 		try
         {
         
-	        struct hostent* hostinfo = gethostbyname (this->address.c_str());
-	        cout<<"host addr " << this->address << ", h_name " << hostinfo->h_name<< " port "<<this->port<< endl;
+	        struct hostent* hostinfo = gethostbyname (this->address->c_str());
+	        cout<<"host addr " << *(this->address) << ", h_name " << hostinfo->h_name<< " port "<<*(this->port)<< endl;
   	        if (hostinfo == nullptr)
             {
-		        cout<<"Unknown host " << this->address << endl;
+		        cout<<"Unknown host " << *(this->address) << endl;
                 return network::Result::RESULT_ERROR;
             }
     
@@ -324,9 +324,9 @@ network::Result SocketGLIBC::send(const string& buffer)
     return network::Result::RESULT_OK; // is this a behavior I want to see? maybe add try catch and return error when fails?
 }
 
-network::Result SocketGLIBC::receive(string& buffer)
+network::Result SocketGLIBC::receive(string* buffer)
 {
-    buffer[0];
+    (*buffer)[0];
     // TODO:
     // Raise NotImplementedError
     return network::Result::RESULT_ERROR;
