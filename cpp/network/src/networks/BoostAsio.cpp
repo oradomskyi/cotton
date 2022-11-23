@@ -4,25 +4,20 @@
 
 BoostAsio::BoostAsio()
     : Network()
+    , tcp_resolver(this->io)
+    , socket(this->io)
 {}
 
 BoostAsio::BoostAsio(const string& address, const uint16_t& port)
     : Network(address, port)
+    , tcp_resolver(this->io)
+    , socket(this->io)
 {
-    // the io_context is initialised together with members before executing
-    // the code below. I believe..
-    
     //cout << this->state << "BoostAsio::Create()" << endl;
-    // for some reason does not work in initialization constructor above
-    this->tcp_resolver = new tcp::resolver(this->io);
-    this->socket = new tcp::socket(this->io);
-
     this->state = network::State::CREATED;
 
     //cout << this->state  << "BoostAsio::Resolve()" << endl;
-
-    // meanwhile endpoint could be assignegned
-    this->endpoints = this->tcp_resolver->resolve(this->address->c_str(), to_string(*(this->port)).c_str());
+    this->endpoints = this->tcp_resolver.resolve(this->address->c_str(), to_string(*(this->port)).c_str());
     
     //cout << "this->endpoints.size() " << this->endpoints.size() << endl;
     if(0 >= this->endpoints.size())
@@ -34,13 +29,9 @@ BoostAsio::BoostAsio(const string& address, const uint16_t& port)
 
     this->state = network::State::CREATED;
 
-    //cout << this->state << "BoostAsio::Connect()" << endl;
-	
-    //cout << "BoostAsio::start()" << endl;
-    // Start the connect actor.
     this->start_connect(this->endpoints.begin());
 
-    this->io.run();
+    this->io.poll();
     //cout << this->io.stopped()<< endl;
     //cout << "BoostAsio ctor" << endl;
 }
@@ -51,9 +42,7 @@ BoostAsio::~BoostAsio()
     this->state = network::State::ERROR;
 
     boost::system::error_code ignored_error;
-    this->socket->close(ignored_error);
-    this->tcp_resolver->~basic_resolver();
-    this->socket->~basic_stream_socket();
+    this->socket.close(ignored_error);
 
     //cout << "BoostAsio dtor" << endl;
 }
@@ -66,14 +55,14 @@ void BoostAsio::start_connect(tcp::resolver::results_type::iterator endpoint_ite
     {
       //cout << "Trying " << endpoint_iter->endpoint() << endl;
       // Start the asynchronous connect operation.
-      this->socket->async_connect(endpoint_iter->endpoint(),
+      this->socket.async_connect(endpoint_iter->endpoint(),
           std::bind(&BoostAsio::handle_connect,
             this, _1, endpoint_iter));
     }
     else
     {
       // There are no more endpoints to try. Shut down the client.
-      //this->stop();
+      //this->io.stop();
       this->state = network::State::ERROR;
     }
 }
@@ -86,7 +75,7 @@ void BoostAsio::handle_connect(const boost::system::error_code& error,
     // The async_connect() function automatically opens the socket at the start
     // of the asynchronous operation. If the socket is closed at this time then
     // the timeout handler must have run first.
-    if (!this->socket->is_open())
+    if (!this->socket.is_open())
     {
       cout << "Connect timed out\n";
 
@@ -101,7 +90,7 @@ void BoostAsio::handle_connect(const boost::system::error_code& error,
 
       // We need to close the socket used in the previous connection attempt
       // before starting a new one.
-      this->socket->close();
+      this->socket.close();
 
       // Try the next available endpoint.
       this->start_connect(++endpoint_iter);
@@ -111,6 +100,10 @@ void BoostAsio::handle_connect(const boost::system::error_code& error,
     else
     {
       cout << "Connected to " << endpoint_iter->endpoint() << endl;
+      
+      // Put the socket into non-blocking mode.
+      this->socket.non_blocking(true);
+
       this->state = network::State::CONNECTED;
       this->io.stop();
       //cout << this->io.stopped()<< endl;
@@ -120,16 +113,15 @@ void BoostAsio::handle_connect(const boost::system::error_code& error,
 
 void BoostAsio::handle_write()
 {
-    
     this->state = network::State::READY;
-    this->io.stop();
+    //this->io.stop();
 }
 
 
 void BoostAsio::handle_read()
 {
     this->state = network::State::READY;
-    this->io.stop();
+    //this->io.stop();
 }
 
 network::Result BoostAsio::send(const string& buffer)
@@ -138,7 +130,6 @@ network::Result BoostAsio::send(const string& buffer)
     if(this->state == network::State::BUSY)
         return network::Result::RESULT_ERROR;
 
-    cout << this->io.stopped() << endl;
     if(this->io.stopped())
         this->io.restart();
 
@@ -146,11 +137,11 @@ network::Result BoostAsio::send(const string& buffer)
     { 
         this->state = network::State::BUSY;
         //cout << "BoostAsio::send() run_one() A" << this->state << endl; 
-        boost::asio::async_write(*(this->socket)
+        boost::asio::async_write(this->socket
             , boost::asio::buffer(buffer, buffer.size())
             , std::bind(&BoostAsio::handle_write, this));
         
-        this->io.run();
+        this->io.poll_one();
     }
 
     return network::Result::RESULT_OK;
@@ -162,7 +153,6 @@ network::Result BoostAsio::receive(string* buffer)
     if(this->state == network::State::BUSY)
         return network::Result::RESULT_ERROR;
 
-    //cout << this->io.stopped() << endl;
     if(this->io.stopped())
         this->io.restart();
 
@@ -170,11 +160,12 @@ network::Result BoostAsio::receive(string* buffer)
     { 
         this->state = network::State::BUSY;
         //cout << "BoostAsio::send() run_one() A" << this->state << endl; 
-        boost::asio::async_read(*(this->socket)
-            , boost::asio::buffer(*buffer, buffer->size())
+        boost::asio::async_read_until(this->socket
+            , boost::asio::dynamic_buffer(*buffer)
+            , '\n'
             , std::bind(&BoostAsio::handle_read, this));
         
-        this->io.run();
+        this->io.poll_one();
     }
 
     return network::Result::RESULT_OK;

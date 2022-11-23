@@ -25,9 +25,9 @@ private:
     static const network::Type type = network::Type::BOOST_ASIO;
 
     boost::asio::io_context io;
-    tcp::resolver* tcp_resolver;
+    tcp::resolver tcp_resolver;
     tcp::resolver::results_type endpoints;
-    tcp::socket* socket;
+    tcp::socket socket;
 
 private:
     void start_connect(tcp::resolver::results_type::iterator endpoint_iter);

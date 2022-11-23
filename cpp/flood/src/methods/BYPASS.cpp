@@ -35,21 +35,25 @@ void BYPASS::run()
 	{
 		return;
 	}
-	//this->setState(flood::State::RUNNING);
+    {
+	this->state = flood::State::RUNNING;
 	// it is better to keep connection alive to avoid overhead	
     // https://stackoverflow.com/questions/20599570/is-it-better-to-keep-a-socket-open-for-frequent-requests-or-to-close-the-socket
     
     // TODO:
     // Implement proper logic of GET attack method here
-    this->getNetworkPtr()->send(this->header);
+    this->getNetworkPtr()->send("GET /index.html");//this->header);
 
     // testing read response    
-    string buf(30, '.');
-    buf[0] = '<';
-    buf[19] = '>';
+    string buf;
     this->getNetworkPtr()->receive(&buf);
-    cout << buf<<endl;
-    this->setState(flood::State::READY);
+        if(!buf.empty())    
+        {
+            cout << buf<<endl;
+    
+            this->state = flood::State::READY;
+        }
+    }
 }
 
 void BYPASS::disable()
