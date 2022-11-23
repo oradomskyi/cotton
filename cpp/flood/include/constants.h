@@ -31,11 +31,11 @@ enum RequestType {
 };
 
 static const unordered_map<RequestType, string> RequestTypeStr = { 
-	  { RequestType::GET  , "GET"  }
-	, { RequestType::RGET , "RGET" }
-	, { RequestType::POST , "POST" }
-    , { RequestType::GET  , "BYPASS"  }
-	, { RequestType::NONE , ""     }
+	  { RequestType::GET    , "GET"  }
+	, { RequestType::RGET   , "RGET" }
+	, { RequestType::POST   , "POST" }
+    , { RequestType::BYPASS , "BYPASS"  }
+	, { RequestType::NONE   , ""     }
 };
 
 // several methods are using custom values for 'User-Agent' and 'Content-Length'

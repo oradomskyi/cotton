@@ -44,7 +44,7 @@ void BYPASS::run()
     this->getNetworkPtr()->send(this->header);
 
     // testing read response    
-    string buf(20, '.');
+    string buf(30, '.');
     buf[0] = '<';
     buf[19] = '>';
     this->getNetworkPtr()->receive(&buf);

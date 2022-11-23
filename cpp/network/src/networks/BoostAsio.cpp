@@ -120,15 +120,16 @@ void BoostAsio::handle_connect(const boost::system::error_code& error,
 
 void BoostAsio::handle_write()
 {
-    this->io.stop();
+    
     this->state = network::State::READY;
+    this->io.stop();
 }
 
 
 void BoostAsio::handle_read()
 {
-    this->io.stop();
     this->state = network::State::READY;
+    this->io.stop();
 }
 
 network::Result BoostAsio::send(const string& buffer)
@@ -137,7 +138,7 @@ network::Result BoostAsio::send(const string& buffer)
     if(this->state == network::State::BUSY)
         return network::Result::RESULT_ERROR;
 
-    //cout << this->io.stopped() << endl;
+    cout << this->io.stopped() << endl;
     if(this->io.stopped())
         this->io.restart();
 
