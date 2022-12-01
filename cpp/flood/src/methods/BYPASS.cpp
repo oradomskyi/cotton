@@ -50,10 +50,11 @@ void BYPASS::run()
         if(!buf.empty())    
         {
             cout << buf<<endl;
-    
             this->state = flood::State::READY;
+            // TODO: make sure proper logic with all waiting and messaging back and forth with network io
         }
     }
+    
 }
 
 void BYPASS::disable()
@@ -64,9 +65,7 @@ void BYPASS::disable()
 void BYPASS::initNetwork()
 {
     //this->networkPtr = new SocketGLIBC(this->getTarget()->getAddress(), this->getTarget()->getPort());
-	//this->networkPtr = new BoostAsio(this->getTarget()->getAddress(), this->getTarget()->getPort());
-
-	this->networkPtr = BoostAsio::getInstance(this->getTarget()->getAddress(), this->getTarget()->getPort());
+	this->networkPtr = new BoostAsio(this->getTarget()->getAddress(), this->getTarget()->getPort());
 }
 
 void BYPASS::operator()()

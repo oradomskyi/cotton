@@ -2,71 +2,63 @@
 
 // https://www.boost.org/doc/libs/1_78_0/doc/html/boost_asio/example/cpp11/timeouts/async_tcp_client.cpp
 
-BoostAsio* BoostAsio::_instance = nullptr;
-mutex BoostAsio::_mutex;
+BoostAsioIO* BoostAsioIO::_instance = nullptr;
+mutex BoostAsioIO::_mutex;
 
-BoostAsio* BoostAsio::getInstance(const string& address, const uint16_t& port)
+BoostAsioIO::BoostAsioIO()
+{}
+
+BoostAsioIO* BoostAsioIO::getInstance()
 {
 	lock_guard<mutex> lock(_mutex);
 	if(nullptr == _instance)
 	{
-		_instance = new BoostAsio(address, port);
+		_instance = new BoostAsioIO();
 	}
 	return _instance;
 }
 
+boost::asio::io_context* BoostAsioIO::getContext()
+{
+    return &io;
+}
+
 BoostAsio::BoostAsio()
     : Network()
-    , tcp_resolver(this->io)
-    , socket(this->io)
+    , tcp_resolver(*(BoostAsioIO::getInstance()->getContext()))
+    , socket(*(BoostAsioIO::getInstance()->getContext()))
 {}
 
 BoostAsio::BoostAsio(const string& address, const uint16_t& port)
     : Network(address, port)
-    , tcp_resolver(this->io)
-    , socket(this->io)
+    , tcp_resolver(*(BoostAsioIO::getInstance()->getContext()))
+    , socket(*(BoostAsioIO::getInstance()->getContext()))
 {
-    //cout << this->state << "BoostAsio::Create()" << endl;
     this->state = network::State::CREATED;
-
-    //cout << this->state  << "BoostAsio::Resolve()" << endl;
     this->endpoints = this->tcp_resolver.resolve(this->address->c_str(), to_string(*(this->port)).c_str());
-    
-    //cout << "this->endpoints.size() " << this->endpoints.size() << endl;
     if(0 >= this->endpoints.size())
     {
         cout << "BoostAsio() cannot resolve host! Exiting constructor!" << endl;
         this->state = network::State::ERROR;
         return;
     }
-
     this->state = network::State::CREATED;
 
     this->start_connect(this->endpoints.begin());
-
-    this->io.poll();
-    //cout << this->io.stopped()<< endl;
-    //cout << "BoostAsio ctor" << endl;
 }
 
 BoostAsio::~BoostAsio()
 {
-    //cout << "BoostAsio::~BoostAsio()" << endl;
     this->state = network::State::ERROR;
 
     boost::system::error_code ignored_error;
     this->socket.close(ignored_error);
-
-    //cout << "BoostAsio dtor" << endl;
 }
 
 void BoostAsio::start_connect(tcp::resolver::results_type::iterator endpoint_iter)
 {   
-    //cout << "BoostAsio::start_connect()" << endl;
-    // https://www.boost.org/doc/libs/1_74_0/doc/html/boost_asio/example/cpp11/timeouts/async_tcp_client.cpp
     if (endpoint_iter != this->endpoints.end())
     {
-      //cout << "Trying " << endpoint_iter->endpoint() << endl;
       // Start the asynchronous connect operation.
       this->socket.async_connect(endpoint_iter->endpoint(),
           std::bind(&BoostAsio::handle_connect,
@@ -74,8 +66,7 @@ void BoostAsio::start_connect(tcp::resolver::results_type::iterator endpoint_ite
     }
     else
     {
-      // There are no more endpoints to try. Shut down the client.
-      //this->io.stop();
+      // There are no more endpoints to try.
       this->state = network::State::ERROR;
     }
 }
@@ -83,8 +74,6 @@ void BoostAsio::start_connect(tcp::resolver::results_type::iterator endpoint_ite
 void BoostAsio::handle_connect(const boost::system::error_code& error,
       tcp::resolver::results_type::iterator endpoint_iter)
 {
-    //cout << "BoostAsio::handle_connect()" << endl;
-
     // The async_connect() function automatically opens the socket at the start
     // of the asynchronous operation. If the socket is closed at this time then
     // the timeout handler must have run first.
@@ -118,8 +107,6 @@ void BoostAsio::handle_connect(const boost::system::error_code& error,
       this->socket.non_blocking(true);
 
       this->state = network::State::CONNECTED;
-      //this->io.stop();
-      //cout << this->io.stopped()<< endl;
     }
 }
 
@@ -129,10 +116,11 @@ void BoostAsio::handle_write(const boost::system::error_code& error)
 	if(!error)
 	{
     	this->state = network::State::READY;
-    	this->io.stop();
 	}
 	else
-		cout << "err write";
+	{
+        cout << "err write\n";
+    }
 }
 
 
@@ -141,30 +129,28 @@ void BoostAsio::handle_read(const boost::system::error_code& error)
 	if(!error)
 	{
     	this->state = network::State::READY;
-    	this->io.stop();
 	}
 	else
-		cout << "err read";
+    {
+        cout << "err read\n";
+    }
 }
 
 network::Result BoostAsio::send(const string& buffer)
 {
-    //cout << "BoostAsio::send()" << this->state << endl;
-    if(this->state == network::State::BUSY)
+    if(network::State::BUSY == this->state)
         return network::Result::RESULT_ERROR;
 
-    if(this->io.stopped())
-        this->io.restart();
+    if(BoostAsioIO::getInstance()->getContext()->stopped())
+        BoostAsioIO::getInstance()->getContext()->restart();
 
-    // add condition if needed
     { 
         this->state = network::State::BUSY;
-        //cout << "BoostAsio::send() run_one() A" << this->state << endl; 
         boost::asio::async_write(this->socket
             , boost::asio::buffer(buffer, buffer.size())
             , std::bind(&BoostAsio::handle_write, this, _1));
-        
-        this->io.poll();
+
+        BoostAsioIO::getInstance()->getContext()->poll();
     }
 
     return network::Result::RESULT_OK;
@@ -172,23 +158,20 @@ network::Result BoostAsio::send(const string& buffer)
 
 network::Result BoostAsio::receive(string* buffer)
 {
-    //cout << "BoostAsio::receive()" << this->state << endl;
-    if(this->state == network::State::BUSY)
+    if(network::State::BUSY == this->state)
         return network::Result::RESULT_ERROR;
 
-    if(this->io.stopped())
-        this->io.restart();
+    if(BoostAsioIO::getInstance()->getContext()->stopped())
+        BoostAsioIO::getInstance()->getContext()->restart();
 
-    // add condition if needed
     { 
         this->state = network::State::BUSY;
-        //cout << "BoostAsio::send() run_one() A" << this->state << endl; 
         boost::asio::async_read_until(this->socket
             , boost::asio::dynamic_buffer(*buffer)
             , '\n'
             , std::bind(&BoostAsio::handle_read, this, _1));
-        
-        this->io.poll();
+
+        BoostAsioIO::getInstance()->getContext()->poll();
     }
 
     return network::Result::RESULT_OK;

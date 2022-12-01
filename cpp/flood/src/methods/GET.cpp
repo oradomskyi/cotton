@@ -29,13 +29,12 @@ void GET::enable()
 
 void GET::run()
 {
-    //printf("GET::run()");
-    //cout<<this->getState() << ' ' << this->getNetworkPtr()->getState() << endl;
 	if(flood::State::READY != this->getState())
 	{
 		return;
 	}
-	//this->setState(flood::State::RUNNING);
+	this->setState(flood::State::RUNNING);
+
 	// it is better to keep connection alive to avoid overhead	
     // https://stackoverflow.com/questions/20599570/is-it-better-to-keep-a-socket-open-for-frequent-requests-or-to-close-the-socket
     
@@ -54,9 +53,7 @@ void GET::disable()
 void GET::initNetwork()
 {
     //this->networkPtr = new SocketGLIBC(this->getTarget()->getAddress(), this->getTarget()->getPort());
-	this->networkPtr = BoostAsio::getInstance(this->getTarget()->getAddress(), this->getTarget()->getPort());
-
-//new BoostAsio(this->getTarget()->getAddress(), this->getTarget()->getPort());
+	this->networkPtr = new BoostAsio(this->getTarget()->getAddress(), this->getTarget()->getPort());
 }
 
 void GET::operator()()

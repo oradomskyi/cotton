@@ -3,43 +3,6 @@
 static const string ip1 = "osboxes";//"192.168.56.1";
 static const int port1 = 65123;
 
-static const vector<string> targets = {
-  "www-dev.roseltorg.ru"
-//, "www.торусдон.рф" // core dumped, I have to make it work
-, "www.2gis.ru"
-, "www.a-3.ru"
-, "www.adygnet.ru"
-, "www.ael.ru"
-, "www.agatu.ru"
-, "www.agroprombank.com"
-, "www.akado.ru"
-, "www.akibank.ru"
-, "www.aktorstc.ru"
-, "www.altspu.ru"
-, "www.altstu.ru"
-, "www.amchs.ru"
-, "www.amgpgu.ru"
-, "www.amursma.ru"
-, "www.amursu.ru"
-, "www.ap22.ru"
-, "www.apkbank.ru"
-, "www.arcticsu.ru"
-, "www.asau.ru"
-, "www.asberg.ru"
-, "www.asmu.ru"
-, "www.asu.ru"
-, "www.audiomania.ru"
-, "www.aumsu.ru"
-, "www.avito.ru"
-, "www.azov-vodokanal.ru"
-, "www.bagsurb.ru"
-, "www.balakovo-bank.ru"
-, "www.bankfax.ru"
-, "www.bankodrom.ru"
-, "www.bankperm.ru"
-, "www.bashedu.ru"
-};
-
 void test_parallelboostfiber_include_boost()
 {
 	//using namespace boost::lambda;
@@ -98,6 +61,7 @@ void test_parallelboostfiber_run()
     
     }
 */
+sleep(sleep_delay_5s);
     sleep(sleep_delay_5s);
     sleep(sleep_delay_5s);
     sleep(sleep_delay_5s);

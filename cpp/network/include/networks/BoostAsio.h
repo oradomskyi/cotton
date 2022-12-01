@@ -9,6 +9,9 @@
 
 #include "../Network.h"
 
+// https://stackoverflow.com/questions/40561097/read-until-a-string-delimiter-in-boostasiostreambuf
+// https://www.boost.org/doc/libs/1_74_0/doc/html/boost_asio/example/cpp11/timeouts/async_tcp_client.cpp
+
 using std::mutex;
 using std::lock_guard;
 
@@ -22,28 +25,35 @@ using boost::asio::steady_timer;
 using boost::asio::ip::tcp;
 using std::placeholders::_1;
 
+// wrap into namespace if needed
+class BoostAsioIO
+{
+private:
+    boost::asio::io_context io;
 
-// https://www.boost.org/doc/libs/1_74_0/doc/html/boost_asio/example/cpp11/timeouts/async_tcp_client.cpp
+	static BoostAsioIO* _instance;
+	static mutex _mutex;
+
+private:
+    BoostAsioIO();
+	BoostAsioIO(BoostAsioIO& other) = delete;
+	void operator = (const BoostAsioIO&) = delete; 
+
+public:
+	static BoostAsioIO* getInstance();
+    boost::asio::io_context* getContext();
+};
+
 class BoostAsio : public Network
 {
 private:
     static const network::Type type = network::Type::BOOST_ASIO;
-
-    boost::asio::io_context io;
+    
     tcp::resolver tcp_resolver;
     tcp::resolver::results_type endpoints;
     tcp::socket socket;
 
-	// https://stackoverflow.com/questions/40561097/read-until-a-string-delimiter-in-boostasiostreambuf
-	static BoostAsio* _instance;
-	static mutex _mutex;
-
 private:
-
-	BoostAsio();
-    BoostAsio(const string& address, const uint16_t& port);
-    ~BoostAsio();
-
     void start_connect(tcp::resolver::results_type::iterator endpoint_iter);
     void handle_connect(const boost::system::error_code& error,
       tcp::resolver::results_type::iterator endpoint_iter);
@@ -51,11 +61,10 @@ private:
     void handle_write(const boost::system::error_code& error);
     void handle_read(const boost::system::error_code& error);
 
-	BoostAsio(BoostAsio& other) = delete;
-	void operator = (const BoostAsio&) = delete; 
-
 public:
-	static BoostAsio* getInstance(const string& address, const uint16_t& port);
+	BoostAsio();
+    BoostAsio(const string& address, const uint16_t& port);
+    ~BoostAsio();
 
     network::Result send(const string& buffer);
     network::Result receive(string* buffer);
