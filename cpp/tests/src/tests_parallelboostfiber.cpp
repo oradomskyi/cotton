@@ -1,6 +1,6 @@
 #include "../include/tests_parallelboostfiber.h"
 
-static const string ip1 = "192.168.56.1";
+static const string ip1 = "osboxes";//"192.168.56.1";
 static const int port1 = 65123;
 
 static const vector<string> targets = {

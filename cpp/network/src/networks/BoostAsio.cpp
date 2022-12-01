@@ -2,6 +2,19 @@
 
 // https://www.boost.org/doc/libs/1_78_0/doc/html/boost_asio/example/cpp11/timeouts/async_tcp_client.cpp
 
+BoostAsio* BoostAsio::_instance = nullptr;
+mutex BoostAsio::_mutex;
+
+BoostAsio* BoostAsio::getInstance(const string& address, const uint16_t& port)
+{
+	lock_guard<mutex> lock(_mutex);
+	if(nullptr == _instance)
+	{
+		_instance = new BoostAsio(address, port);
+	}
+	return _instance;
+}
+
 BoostAsio::BoostAsio()
     : Network()
     , tcp_resolver(this->io)
@@ -100,28 +113,38 @@ void BoostAsio::handle_connect(const boost::system::error_code& error,
     else
     {
       cout << "Connected to " << endpoint_iter->endpoint() << endl;
-      
+
       // Put the socket into non-blocking mode.
       this->socket.non_blocking(true);
 
       this->state = network::State::CONNECTED;
-      this->io.stop();
+      //this->io.stop();
       //cout << this->io.stopped()<< endl;
     }
 }
 
 
-void BoostAsio::handle_write()
+void BoostAsio::handle_write(const boost::system::error_code& error)
 {
-    this->state = network::State::READY;
-    //this->io.stop();
+	if(!error)
+	{
+    	this->state = network::State::READY;
+    	this->io.stop();
+	}
+	else
+		cout << "err write";
 }
 
 
-void BoostAsio::handle_read()
+void BoostAsio::handle_read(const boost::system::error_code& error)
 {
-    this->state = network::State::READY;
-    //this->io.stop();
+	if(!error)
+	{
+    	this->state = network::State::READY;
+    	this->io.stop();
+	}
+	else
+		cout << "err read";
 }
 
 network::Result BoostAsio::send(const string& buffer)
@@ -139,9 +162,9 @@ network::Result BoostAsio::send(const string& buffer)
         //cout << "BoostAsio::send() run_one() A" << this->state << endl; 
         boost::asio::async_write(this->socket
             , boost::asio::buffer(buffer, buffer.size())
-            , std::bind(&BoostAsio::handle_write, this));
+            , std::bind(&BoostAsio::handle_write, this, _1));
         
-        this->io.poll_one();
+        this->io.poll();
     }
 
     return network::Result::RESULT_OK;
@@ -163,9 +186,9 @@ network::Result BoostAsio::receive(string* buffer)
         boost::asio::async_read_until(this->socket
             , boost::asio::dynamic_buffer(*buffer)
             , '\n'
-            , std::bind(&BoostAsio::handle_read, this));
+            , std::bind(&BoostAsio::handle_read, this, _1));
         
-        this->io.poll_one();
+        this->io.poll();
     }
 
     return network::Result::RESULT_OK;

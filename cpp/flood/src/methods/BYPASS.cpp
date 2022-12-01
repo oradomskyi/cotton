@@ -42,7 +42,7 @@ void BYPASS::run()
     
     // TODO:
     // Implement proper logic of GET attack method here
-    this->getNetworkPtr()->send("GET /index.html");//this->header);
+    this->getNetworkPtr()->send("BYPASS ");//this->header);
 
     // testing read response    
     string buf;
@@ -64,7 +64,9 @@ void BYPASS::disable()
 void BYPASS::initNetwork()
 {
     //this->networkPtr = new SocketGLIBC(this->getTarget()->getAddress(), this->getTarget()->getPort());
-	this->networkPtr = new BoostAsio(this->getTarget()->getAddress(), this->getTarget()->getPort());
+	//this->networkPtr = new BoostAsio(this->getTarget()->getAddress(), this->getTarget()->getPort());
+
+	this->networkPtr = BoostAsio::getInstance(this->getTarget()->getAddress(), this->getTarget()->getPort());
 }
 
 void BYPASS::operator()()

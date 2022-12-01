@@ -41,7 +41,7 @@ void GET::run()
     
     // TODO:
     // Implement proper logic of GET attack method here
-    this->getNetworkPtr()->send(this->header);
+    this->getNetworkPtr()->send("GET ");//this->header);
 
     this->setState(flood::State::READY);
 }
@@ -54,7 +54,9 @@ void GET::disable()
 void GET::initNetwork()
 {
     //this->networkPtr = new SocketGLIBC(this->getTarget()->getAddress(), this->getTarget()->getPort());
-	this->networkPtr = new BoostAsio(this->getTarget()->getAddress(), this->getTarget()->getPort());
+	this->networkPtr = BoostAsio::getInstance(this->getTarget()->getAddress(), this->getTarget()->getPort());
+
+//new BoostAsio(this->getTarget()->getAddress(), this->getTarget()->getPort());
 }
 
 void GET::operator()()
