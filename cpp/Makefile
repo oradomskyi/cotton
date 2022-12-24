@@ -20,5 +20,6 @@ SRC_ALL = $(DIR_SRC_FLOOD)*.cpp $(DIR_SRC_FLOOD_METHODS)*.cpp $(DIR_SRC_NETWORK)
 TARGET = tool
 
 all: $(TARGET)
+
 $(TARGET): main.cpp $(SRC_ALL)
 	$(CC) $(CFLAGS) -o $(TARGET) main.cpp $(SRC_ALL) -I$(DIR_BOOST_INCLUDE) -L$(DIR_BOOST_LIB) $(BOOSTFLAGS) 
