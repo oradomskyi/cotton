@@ -1,6 +1,6 @@
 cd cpp
 sudo chmod u+x unpack_resources.sh
-./unpack_resources.sh
+./cpp/unpack_resources.sh
 
 cd ../test/
 sudo chmod u+x install_gtest.sh
