@@ -10,7 +10,7 @@ using std::string;
 using std::pair;
 using std::vector;
 
-static const string rn = "\\r\\n";
+static const string rn = "\r\n";
 
 namespace flood
 {

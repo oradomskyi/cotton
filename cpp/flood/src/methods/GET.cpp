@@ -40,8 +40,9 @@ void GET::run()
     
     // TODO:
     // Implement proper logic of GET attack method here
-    this->getNetworkPtr()->send("GET ");//this->header);
+    this->getNetworkPtr()->send(this->request);
 
+	cout << endl<<">>" << this->request << "<<" <<endl;
     this->setState(flood::State::READY);
 }
 

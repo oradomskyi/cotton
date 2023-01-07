@@ -6,8 +6,8 @@ int main()
 	
 	//TODO: Wrap into a Client class responsible for loading and preparing attack
 	 
-	static const string ip1 = "osboxes";//"192.168.56.1";
-	static const int port1 = 65123;
+	static const string ip1 = "127.0.0.1";//"192.168.56.1";
+	static const int port1 = 8080;
 
      cout << "test_parallelboostfiber_run" << endl;
 
@@ -20,10 +20,10 @@ int main()
 	{
 		cout << "making " << ip1 << endl;
 		Flood* flood0 = new GET(ip1, port1 + n++); 		    floodsPtrs.push_back(std::move(flood0));
-        Flood* flood1 = new GET(ip1, port1 + n++);		    floodsPtrs.push_back(std::move(flood1));
-		Flood* flood2 = new BYPASS(ip1, port1 + n++);		    floodsPtrs.push_back(std::move(flood2));
-		Flood* flood3 = new BYPASS(ip1, port1 + n++);		    floodsPtrs.push_back(std::move(flood3));
-		Flood* flood4 = new GET(ip1, port1 + n++);		    floodsPtrs.push_back(std::move(flood4));
+        //Flood* flood1 = new GET(ip1, port1 + n++);		    floodsPtrs.push_back(std::move(flood1));
+		//Flood* flood2 = new BYPASS(ip1, port1 + n++);		    floodsPtrs.push_back(std::move(flood2));
+		//Flood* flood3 = new BYPASS(ip1, port1 + n++);		    floodsPtrs.push_back(std::move(flood3));
+		//Flood* flood4 = new GET(ip1, port1 + n++);		    floodsPtrs.push_back(std::move(flood4));
 				
         //if(flood::State::READY == flood->getState())
 		//    floodsPtrs.push_back(std::move(flood));
