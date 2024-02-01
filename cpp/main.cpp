@@ -1,49 +1,59 @@
-#include "threadmaster/include/masters/threadmasters.h"
+#include <vector>
 
-int main()
+#include <boost/fiber/all.hpp> // todo replace with only necessary includes
+//#include <boost/asio/ip/tcp.hpp>
+
+#include "client/include/Client.h"
+
+using std::vector;
+using std::ref;
+using boost::fibers::fiber;
+
+
+int main(int argc, char* argv[])
 {
-	// -- UNFINISHED -- //
-	
-	//TODO: Wrap into a Client class responsible for loading and preparing attack
-	 
-	static const string ip1 = "127.0.0.1";//"192.168.56.1";
-	static const int port1 = 8080;
+  try
+  {
+    if (argc < 3)
+    {
+      std::cerr << "Usage: client <host> <port>\n";
+      return 1;
+    }
 
-     cout << "test_parallelboostfiber_run" << endl;
+    boost::asio::io_context io_context;
+    tcp::resolver r(io_context);
 
-
-	vector<Flood*> floodsPtrs;
-    vector<Flood*>* pFloodsPtrs = &floodsPtrs;
-	
-    int n = 0;
-    //for(int i = 0; i < 5; i++)
-	{
-		cout << "making " << ip1 << endl;
-		Flood* flood0 = new GET(ip1, port1 + n++); 		    floodsPtrs.push_back(std::move(flood0));
-        //Flood* flood1 = new GET(ip1, port1 + n++);		    floodsPtrs.push_back(std::move(flood1));
-		//Flood* flood2 = new BYPASS(ip1, port1 + n++);		    floodsPtrs.push_back(std::move(flood2));
-		//Flood* flood3 = new BYPASS(ip1, port1 + n++);		    floodsPtrs.push_back(std::move(flood3));
-		//Flood* flood4 = new GET(ip1, port1 + n++);		    floodsPtrs.push_back(std::move(flood4));
-				
-        //if(flood::State::READY == flood->getState())
-		//    floodsPtrs.push_back(std::move(flood));
-	}
-
-	cout <<"size floods" << floodsPtrs.size() << endl;
-	for(auto f : floodsPtrs)
-		cout << f->getTarget()->getAddress() << endl;
-
-    int n_threads = 2;
-    ParallelBoostFiber runner(pFloodsPtrs, n_threads);
+    vector<tcp::resolver::results_type> resolver_results;
+    resolver_results.reserve(2);
     
-    cout << "ParallelPosix.getState() = " << runner.getState() << endl;
-    cout << "ParallelPosix.getType() = " << runner.getType() << endl;
+    //int i=0;
+    for (int i = 0; i < 4; i+=2)
+    {   
+        resolver_results.push_back(std::move(r.resolve(argv[i+1], argv[i+2])));
+    }
+    vector<Client> clients;
+    clients.reserve(2);
+    for (int i = 0; i < 2; i++)
+    {   
+        clients.emplace_back(io_context);
+    }
     
-    cout << "ParallelPosix.start() = " << endl;    
-    runner.start();
+    for(int i = 0; i < 2; i++)
+    {
+        fiber f( ref(clients[i]), ref(resolver_results[i]) );
+        f.join();
+    }
+    std::cout<< "joined" << std::endl;
 
+    io_context.run(); // main thread will halt here
+    
+    std::cout<< "context.run() exit" << std::endl;
 
-	return 0;
+  }
+  catch (std::exception& e)
+  {
+    std::cerr << "Exception: " << e.what() << "\n";
+  }
+
+  return 0;
 }
-
-

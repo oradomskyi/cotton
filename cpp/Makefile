@@ -7,15 +7,17 @@ BOOSTFLAGS = -lboost_coroutine -lboost_context  -lboost_system -lboost_fiber
 DIR_BOOST_INCLUDE = ./3rdParty/boost/include/
 DIR_BOOST_LIB = ./3rdParty/boost/lib/
 
-DIR_SRC_FLOOD = flood/src/
-DIR_SRC_FLOOD_METHODS = flood/src/methods/
-DIR_SRC_NETWORK = network/src/
-DIR_SRC_NETWORK_NETWORKS = network/src/networks/
-DIR_SRC_THREADMASTER = threadmaster/src/
-DIR_SRC_THREADMASTER_MASTERS = threadmaster/src/masters/
-DIR_SRC_TESTS = tests/src/
+DIR_SRC_CLIENT = client/src/
+#DIR_SRC_FLOOD = flood/src/
+#DIR_SRC_FLOOD_METHODS = flood/src/methods/
+#DIR_SRC_NETWORK = network/src/
+#DIR_SRC_NETWORK_NETWORKS = network/src/networks/
+#DIR_SRC_THREADMASTER = threadmaster/src/
+#DIR_SRC_THREADMASTER_MASTERS = threadmaster/src/masters/
+#DIR_SRC_TESTS = tests/src/
 
-SRC_ALL = $(DIR_SRC_FLOOD)*.cpp $(DIR_SRC_FLOOD_METHODS)*.cpp $(DIR_SRC_NETWORK)*.cpp $(DIR_SRC_NETWORK_NETWORKS)*.cpp $(DIR_SRC_THREADMASTER)*.cpp $(DIR_SRC_THREADMASTER_MASTERS)*.cpp $(DIR_SRC_TESTS)*.cpp
+SRC_ALL = $(DIR_SRC_CLIENT)*.cpp
+#$(DIR_SRC_FLOOD)*.cpp $(DIR_SRC_FLOOD_METHODS)*.cpp $(DIR_SRC_NETWORK)*.cpp $(DIR_SRC_NETWORK_NETWORKS)*.cpp $(DIR_SRC_THREADMASTER)*.cpp $(DIR_SRC_THREADMASTER_MASTERS)*.cpp $(DIR_SRC_TESTS)*.cpp
 
 TARGET = tool
 
