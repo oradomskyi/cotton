@@ -3,7 +3,8 @@ import socket
 
 def server_program():
     # get the hostname
-    host = "osboxes" #socket.gethostname()
+    host = 'localhost' #socket.gethostname()
+    print("started on", host)
     port = 65123  # initiate port no above 1024
 
     server_socket = socket.socket()  # get instance
@@ -11,7 +12,7 @@ def server_program():
     server_socket.bind((host, port))  # bind host address and port together
 
     # configure how many client the server can listen simultaneously
-    server_socket.listen(2)
+    server_socket.listen(999)
     conn, address = server_socket.accept()  # accept new connection
     print("Connection from: " + str(address))
     while True:
@@ -19,9 +20,9 @@ def server_program():
         data = conn.recv(1024).decode()
         if not data:
             # if data is not received break
-            break
+            continue
         print("from connected user: " + str(data))
-        data = str("_hehe -> \r\n") #""#input(' -> ')
+        data = str("_hehe\n") #""#input(' -> ')
         conn.send(data.encode())  # send data to the client
 
     conn.close()  # close the connection
