@@ -27,16 +27,6 @@ class Client : public ClientInterface
 public:
     Client(boost::asio::io_context& io_context, tcp::resolver::results_type& endpoints);
 
-    // kind-a too much
-    //Client(Client&& other)
-  //: endpoints_(std::move(other.endpoints_))
-  //, socket_(std::move(other.socket_))
-  //, deadline_(std::move(other.deadline_))
-  //, heartbeat_timer_(std::move(other.heartbeat_timer_))
-  //, input_buffer_(std::move(other.input_buffer_))
-  //, output_buffer_(std::move(other.output_buffer_))
-  //{std::cout << "Client move" << std::endl;};
-
     virtual void start();
     virtual void stop();
     virtual void operator()();

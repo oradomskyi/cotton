@@ -30,6 +30,20 @@ static const unordered_map<RequestType, string> RequestTypeStr = {
 	, { RequestType::NONE   , ""     }
 };
 
+/*
+        self._payload = (self._defaultpayload +
+                         'Accept-Encoding: gzip, deflate, br\r\n'
+                         'Accept-Language: en-US,en;q=0.9\r\n'
+                         'Cache-Control: max-age=0\r\n'
+                         'Connection: Keep-Alive\r\n'
+                         'Sec-Fetch-Dest: document\r\n'
+                         'Sec-Fetch-Mode: navigate\r\n'
+                         'Sec-Fetch-Site: none\r\n'
+                         'Sec-Fetch-User: ?1\r\n'
+                         'Sec-Gpc: 1\r\n'
+                         'Pragma: no-cache\r\n'
+                         'Upgrade-Insecure-Requests: 1\r\n')
+*/
 // several methods are using custom values for 'User-Agent' and 'Content-Length'
 // so there is a chance I will have to switch to a unordered_map<string, string>
 static const string TCPHeaderBase = 

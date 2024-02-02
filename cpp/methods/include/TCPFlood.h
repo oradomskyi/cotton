@@ -21,14 +21,6 @@ public:
     : cotton::Flood(io_context, endpoints)
     {};
 
-    // kind-a too much
-    //TCPFlood(TCPFlood&& other)
-    //: Flood(std::move(other))
-    //, request(std::move(other.request))
-    //, header(std::move(other.header))
-    //, defaultHeader(std::move(other.defaultHeader))
-    //{std::cout << "TCPFlood move" << std::endl;};
-
 	const string& getHeader() const;
 	const string& getRequest() const;
 	const string& getDefaultHeader() const;

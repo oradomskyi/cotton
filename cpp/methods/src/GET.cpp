@@ -6,6 +6,7 @@ void GET::start_write()
     if (stopped_)
       return;
 
+    // GET does not seem to care about 
     updateOutputBuffer("/", ""); // ? how ofter these has to be set ?
 
     // Start an asynchronous operation to send a heartbeat message.

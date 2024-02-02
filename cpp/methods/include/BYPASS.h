@@ -13,13 +13,6 @@ public:
         DEADLINE_WRITE_SEC = 5;
     };
 
-    // kind-a too much
-    //BYPASS(BYPASS&& other)
-    //: TCPFlood(std::move(other))
-    //, requestRawPathQS_(std::move(other.requestRawPathQS_))
-    //, requestBody_(std::move(other.requestBody_))
-    //{std::cout << "BYPASS move" << std::endl;};
-
 private:
 	const flood::RequestType type_ = flood::RequestType::BYPASS;
 	string requestRawPathQS_;

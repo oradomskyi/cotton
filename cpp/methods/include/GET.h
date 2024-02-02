@@ -8,15 +8,7 @@ class GET : public TCPFlood
 {
 public:
     GET(boost::asio::io_context& io_context, tcp::resolver::results_type& endpoints)
-    : TCPFlood(io_context, endpoints)
-    {};
-
-    // kind-a too much
-    //GET(GET&& other)
-    //: TCPFlood(std::move(other))
-    //, requestRawPathQS_(std::move(other.requestRawPathQS_))
-    //, requestBody_(std::move(other.requestBody_))
-    //{std::cout << "GET move" << std::endl;};
+    : TCPFlood(io_context, endpoints){};
 
 private:
 	const flood::RequestType type_ = flood::RequestType::GET;

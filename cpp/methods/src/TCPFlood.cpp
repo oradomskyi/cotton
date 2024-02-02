@@ -1,4 +1,5 @@
 #include "../include/TCPFlood.h"
+#include <string>
 
 namespace cotton {
 const string& TCPFlood::getHeader() const { return this->header; }
@@ -39,10 +40,16 @@ void TCPFlood::updateRequest(flood::RequestType reqestType, string qsPathRaw, st
 	this->request += flood::RequestTypeStr.at(reqestType);
 	this->request += " ";
 	this->request += qsPathRaw;
-	this->request += " HTTP/1.1" + rn;
+	this->request += " HTTP/1."+ to_string(rand() % 3) + rn;
 	this->request += this->header;
 	this->request += rn + rn;
 	this->request += body;
+
+    /*
+        self._req_type = self.getMethodType(method)
+        self._defaultpayload = "%s %s HTTP/%s\r\n" % (self._req_type,
+                                                      target.raw_path_qs, randchoice(['1.0', '1.1', '1.2']))
+    */
 }
 
 
