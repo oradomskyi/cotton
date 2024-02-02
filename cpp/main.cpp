@@ -1,8 +1,7 @@
 #include <vector>
 
 #include <boost/fiber/all.hpp> // todo replace with only necessary includes
-//#include <boost/asio/ip/tcp.hpp>
-
+#include "methods/include/all.h"
 #include "client/include/Client.h"
 
 using std::vector;
@@ -31,16 +30,19 @@ int main(int argc, char* argv[])
     {   
         resolver_results.push_back(std::move(r.resolve(argv[i+1], argv[i+2])));
     }
-    vector<Client> clients;
+    vector<cotton::Client*> clients;
     clients.reserve(2);
-    for (int i = 0; i < 2; i++)
-    {   
-        clients.emplace_back(io_context);
-    }
+    //for (int i = 0; i < 2; i++)
+    //{   
+        int i = 0;
+        clients.push_back(new cotton::GET(io_context, resolver_results[i])); i++;
+        clients.push_back(new cotton::BYPASS(io_context, resolver_results[i])); i++;
+        //clients.push_back(std::move(GET(io_context, resolver_results[i])));
+    //}
     
     for(int i = 0; i < 2; i++)
     {
-        fiber f( ref(clients[i]), ref(resolver_results[i]) );
+        fiber f( ref(*(clients[i])) );//, ref(resolver_results[i]) );
         f.join();
     }
     std::cout<< "joined" << std::endl;

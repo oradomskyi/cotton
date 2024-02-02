@@ -63,8 +63,11 @@
 // to message sending.
 //
 
-Client::Client(boost::asio::io_context& io_context)
-    : socket_(io_context)
+namespace cotton {
+
+Client::Client(boost::asio::io_context& io_context, tcp::resolver::results_type& endpoints)
+    : endpoints_(endpoints)
+    , socket_(io_context)
     , deadline_(io_context)
     , heartbeat_timer_(io_context)
   {
@@ -72,10 +75,10 @@ Client::Client(boost::asio::io_context& io_context)
 
   // Called by the user of the client class to initiate the connection process.
   // The endpoints will have been obtained using a tcp::resolver.
-  void Client::start(tcp::resolver::results_type endpoints)
+  void Client::start()//tcp::resolver::results_type endpoints)
   {
     // Start the connect actor.
-    endpoints_ = endpoints;
+    //endpoints_ = endpoints;
     start_connect(endpoints_.begin());
 
     // Start the deadline actor. You will note that we're not setting any
@@ -215,7 +218,7 @@ void Client::start_connect(tcp::resolver::results_type::iterator endpoint_iter)
 
     if (!error)
     {
-      // Wait 10 seconds before sending the next heartbeat.
+      // Wait some seconds before sending the next heartbeat.
       heartbeat_timer_.expires_after(std::chrono::seconds(DEADLINE_WRITE_SEC));
       heartbeat_timer_.async_wait(std::bind(&Client::start_write, this));
     }
@@ -251,14 +254,9 @@ void Client::start_connect(tcp::resolver::results_type::iterator endpoint_iter)
     deadline_.async_wait(std::bind(&Client::check_deadline, this));
   }
 
-void Client::update_output_buffer(std::string& data)
+void Client::operator()()//tcp::resolver::results_type endpoints)
 {
-    std::cout << "my buff="<< output_buffer_ << std::endl;
-    output_buffer_ = data;
-    std::cout << "my buff="<< output_buffer_ << std::endl;
+    start();//endpoints);
 }
 
-void Client::operator()(tcp::resolver::results_type endpoints)
-{
-    start(endpoints);
-}
+} // cotton
