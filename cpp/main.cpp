@@ -4,9 +4,10 @@
 #include "methods/include/all.h"
 #include "client/include/Client.h"
 
+
 using std::vector;
-using std::ref;
 using boost::fibers::fiber;
+using std::string;
 
 
 int main(int argc, char* argv[])
@@ -19,38 +20,52 @@ int main(int argc, char* argv[])
       return 1;
     }
 
-    boost::asio::io_context io_context;
-    tcp::resolver r(io_context);
+    cotton::io_context io_context;
+    cotton::tcp::resolver r(io_context);
 
-    vector<tcp::resolver::results_type> resolver_results;
+    vector<cotton::tcp::resolver::results_type> resolver_results;
     resolver_results.reserve(2);
+    
+//string upath1e = "http://example.com/\%D1\%88\%D0\%BB\%D1\%8F\%D1\%85/\%D1\%81\%D1\%8E\%D0\%B4\%D0\%B8?\%D0\%BA\%D0\%BB\%D1\%8E\%D1\%87=\%D0\%B7\%D0\%BD\%D0\%B0\%D1\%87";
+//string upath1d = "http://example.com/шлях/сюди?ключ=знач";
+
+//string upathc = urlEncode(upath1d);
+//std::cout << upath1d << '\n' << upathc <<'\n';
+
+//string upath2 = "http://john:pass@хост.домен:8000";
+
+    vector<string> urls = {"http://37.187.56.77", "https://httpbin.org/get", "http://127.0.0.1:65124", "http://127.0.0.1:65125"};
     
     //int i=0;
     for (int i = 0; i < 4; i+=2)
-    {   
+    {    
         resolver_results.push_back(std::move(r.resolve(argv[i+1], argv[i+2])));
     }
-    vector<cotton::Client*> clients;
-    clients.reserve(2);
-    //for (int i = 0; i < 2; i++)
-    //{   
-        int i = 0;
-        clients.push_back(new cotton::GET(io_context, resolver_results[i])); i++;
-        clients.push_back(new cotton::BYPASS(io_context, resolver_results[i])); i++;
-        //clients.push_back(std::move(GET(io_context, resolver_results[i])));
-    //}
     
-    for(int i = 0; i < 2; i++)
+    vector<cotton::Client*> clients;
+    int n_threads_per_target = 2000000;
+    clients.reserve(n_threads_per_target);
+    int i_target = 0;
+    for (int i = 0; i < n_threads_per_target; i++)    
+    {   
+        
+        clients.push_back(new cotton::GET(io_context, resolver_results[i_target], urls[0])); 
+        //clients.push_back(new cotton::BYPASS(io_context, resolver_results[i], urls[1])); i++;
+        //clients.push_back(new cotton::Client(io_context, resolver_results[i]));i++;
+        //clients.push_back(new cotton::Client(io_context, resolver_results[i]));i++;
+    
+    }
+    for(auto& c : clients)
     {
-        fiber f( ref(*(clients[i])) );//, ref(resolver_results[i]) );
+        fiber f( std::ref(*c) );
         f.join();
     }
     std::cout<< "joined" << std::endl;
-
+    
     io_context.run(); // main thread will halt here
     
     std::cout<< "context.run() exit" << std::endl;
-
+    
   }
   catch (std::exception& e)
   {

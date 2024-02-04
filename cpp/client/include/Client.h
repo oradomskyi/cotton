@@ -10,23 +10,27 @@
 #include <functional>
 #include <iostream>
 #include <string>
+#include <time.h>
 
 #include "ClientInterface.h"
 
+namespace cotton {
 
-
-using boost::asio::steady_timer;
-using boost::asio::ip::tcp;
+using std::string;
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace cotton {
-    
-class Client : public ClientInterface
+using boost::asio::steady_timer;
+using boost::asio::ip::tcp;
+using boost::asio::io_context;
+using boost::system::error_code;
+
+
+class Client //: public ClientInterface
 {
 public:
-    Client(boost::asio::io_context& io_context, tcp::resolver::results_type& endpoints);
-
+    Client(io_context& io_context, tcp::resolver::results_type endpoints);
+          
     virtual void start();
     virtual void stop();
     virtual void operator()();
@@ -34,14 +38,14 @@ public:
 protected:
 
     virtual void start_connect(tcp::resolver::results_type::iterator endpoint_iter);
-    virtual void handle_connect(const boost::system::error_code& error,
+    virtual void handle_connect(const error_code& error,
       tcp::resolver::results_type::iterator endpoint_iter);
     
     virtual void start_read();
-    virtual void handle_read(const boost::system::error_code& error, std::size_t n);
+    virtual void handle_read(const error_code& error, std::size_t n);
     
     virtual void start_write();
-    virtual void handle_write(const boost::system::error_code& error);
+    virtual void handle_write(const error_code& error);
 
     void check_deadline();
     
@@ -55,8 +59,8 @@ protected:
   tcp::socket socket_;
   steady_timer deadline_;
   steady_timer heartbeat_timer_;
-  std::string input_buffer_;
-  std::string output_buffer_="Hello from default async client!";
+  string input_buffer_;
+  string output_buffer_="Hello from default async client!";
 
 };
 

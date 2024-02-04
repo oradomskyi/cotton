@@ -7,26 +7,24 @@ namespace cotton{
 class BYPASS : public TCPFlood
 {
 public:
-    BYPASS(boost::asio::io_context& io_context, tcp::resolver::results_type& endpoints)
-    : TCPFlood(io_context, endpoints)
+    BYPASS(io_context& io_context, tcp::resolver::results_type& endpoints, const string& url)
+    : TCPFlood(io_context, endpoints, url)
     {
-        DEADLINE_WRITE_SEC = 5;
+        DEADLINE_WRITE_SEC = 1;
     };
 
 private:
 	const flood::RequestType type_ = flood::RequestType::BYPASS;
-	string requestRawPathQS_;
-	string requestBody_;
 
 private:
-    void updateOutputBuffer(string rawPathQS, string body);
+    void updateOutputBuffer(const string& rawPathQS, const string& body);
 
 protected:
 	void start_read();
-    void handle_read(const boost::system::error_code& error, std::size_t n);
+    void handle_read(const error_code& error, std::size_t n);
 
     void start_write();
-    void handle_write(const boost::system::error_code& error);
+    void handle_write(const error_code& error);
 };
 }
 #endif

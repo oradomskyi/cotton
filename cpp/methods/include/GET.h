@@ -7,23 +7,26 @@ namespace cotton{
 class GET : public TCPFlood
 {
 public:
-    GET(boost::asio::io_context& io_context, tcp::resolver::results_type& endpoints)
-    : TCPFlood(io_context, endpoints){};
+    GET(io_context& io_context, tcp::resolver::results_type& endpoints, const string& url)
+    : TCPFlood(io_context, endpoints, url)
+    {
+        DEADLINE_CONNECT_SEC = 100;
+        DEADLINE_READ_SEC = 30;
+        DEADLINE_WRITE_SEC = 100;
+    };
 
 private:
 	const flood::RequestType type_ = flood::RequestType::GET;
-	string requestRawPathQS_;
-	string requestBody_;
 
 private:
-    void updateOutputBuffer(string rawPathQS, string body);
+    void updateOutputBuffer(const string& rawPathQS, const string& body);
 
 protected:
-	virtual void start_read() {}; // override and make it do nothing
-    virtual void handle_read(const boost::system::error_code& error, std::size_t n) {}; // override and make it do nothing
+	virtual void start_read() ; // ?? does not seem to work: override and make it do nothing
+    virtual void handle_read(const error_code& error, std::size_t n) ; // ??override and make it do nothing
 
     virtual void start_write();
-    virtual void handle_write(const boost::system::error_code& error);
+    virtual void handle_write(const error_code& error);
 
 };
 }

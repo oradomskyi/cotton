@@ -2,10 +2,12 @@
 
 CC := g++
 CFLAGS = -Wall -W -O0 -std=c++14 -pthread
-BOOSTFLAGS = -lboost_coroutine -lboost_context  -lboost_system -lboost_fiber
+BOOSTFLAGS = -lboost_coroutine -lboost_context -lboost_system -lboost_fiber -lboost_url
 
-DIR_BOOST_INCLUDE = ./3rdParty/boost/include/
-DIR_BOOST_LIB = ./3rdParty/boost/lib/
+
+DIR_BOOST_INCLUDE = /usr/local/include/boost #./3rdParty/boost/include/
+DIR_BOOST_LIB = /usr/local/lib
+#./3rdParty/boost/libs/
 
 DIR_SRC_CLIENT = client/src/
 DIR_SRC_METHODS = methods/src/
@@ -24,5 +26,9 @@ TARGET = tool
 
 all: $(TARGET)
 
+#-I$(DIR_BOOST_INCLUDE) -L$(DIR_BOOST_LIB)  $(SRC_ALL)
 $(TARGET): main.cpp $(SRC_ALL)
-	$(CC) $(CFLAGS) -o $(TARGET) main.cpp $(SRC_ALL) -I$(DIR_BOOST_INCLUDE) -L$(DIR_BOOST_LIB) $(BOOSTFLAGS) 
+	$(CC) $(CFLAGS) -I$(DIR_BOOST_INCLUDE) main.cpp  $(SRC_ALL) -o $(TARGET) -L$(DIR_BOOST_LIB) $(BOOSTFLAGS)
+	#g++ -I/usr/local/include/boost main.cpp -o tool -L/usr/local/lib -lboost_coroutine -lboost_context -lboost_system -lboost_fiber 
+	#
+#

@@ -5,20 +5,23 @@
 #include "useragents.h"
 
 namespace cotton{
+
+using flood::RequestType;
+
 class TCPFlood : public Flood
 {
 protected:
-	string request;
-	string header;
-	string defaultHeader;
+	string request_;
+	string header_;
+	string defaultHeader_;
 
 protected:
-	void updateHeader(string headers);	
-	void updateRequest(flood::RequestType reqestType, string qsPathRaw, string body); // this is intentional to create these by passing lvalue
-    void updateDefaultHeader(string ip, string origin, string raw_authority);
+	void updateHeader(const string& headers);	
+	void updateRequest(const RequestType& reqestType, const string& qsPathRaw, const string& body); // this is intentional to create these by passing lvalue
+    void updateDefaultHeader(const string& ip, const string& origin, const string& raw_authority);
 public:
-    TCPFlood(boost::asio::io_context& io_context, tcp::resolver::results_type& endpoints)
-    : cotton::Flood(io_context, endpoints)
+    TCPFlood(io_context& io_context, tcp::resolver::results_type& endpoints, const string& url)
+    : Flood(io_context, endpoints, url)
     {};
 
 	const string& getHeader() const;

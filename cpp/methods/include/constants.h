@@ -22,11 +22,20 @@ enum RequestType {
 	, NONE
 };
 
+/*
+    def getMethodType(method: str) -> str:
+        return "GET" if {method.upper()} & {"CFB", "CFBUAM", "GET", "COOKIE", "OVH", "EVEN",
+                                            "DYN", "SLOW", "PPS", "APACHE",
+                                            "BOT", } \
+            else "POST" if {method.upper()} & {"POST", "XMLRPC", "STRESS"} \
+            else "HEAD" if {method.upper()} & {"GSB", "HEAD"} \
+            else "REQUESTS"
+*/
 static const unordered_map<RequestType, string> RequestTypeStr = { 
 	  { RequestType::GET    , "GET"  }
 	, { RequestType::RGET   , "RGET" }
 	, { RequestType::POST   , "POST" }
-    , { RequestType::BYPASS , "BYPASS"  }
+    , { RequestType::BYPASS , "GET"  }
 	, { RequestType::NONE   , ""     }
 };
 
@@ -48,15 +57,16 @@ static const unordered_map<RequestType, string> RequestTypeStr = {
 // so there is a chance I will have to switch to a unordered_map<string, string>
 static const string TCPHeaderBase = 
    string("Accept") + ": " + "*/*" + rn
-        + "Accept-Encoding" + ": " + "gzip, deflate, br" + rn
-        + "Accept-Language" + ": "+ "ru-RU,ru;q=0.9,en-US,en;q=0.7" + rn
-        + "Cache-Control" + ": " + "max-age=0" + rn
-        + "Connection" + ": " + "Keep-Alive" + rn
-        + "Sec-Fetch-Dest" + ": " + "document" + rn
-        + "Sec-Fetch-Mode" + ": " + "navigate" + rn
-        + "Sec-Fetch-Site" + ": " + "same-origin" + rn
-        + "Sec-Fetch-User" + ": " + "?1" + rn
-        + "Pragma" + ": " + "no-cache" + rn
+        + "Accept-Encoding" + ":" + "gzip, deflate, br" + rn
+        + "Accept-Language" + ":"+ "ru-RU,ru;q=0.9,en-US,en;q=0.7" + rn
+        + "Cache-Control" + ":" + "no-cache" + rn // "max-age=0" + rn
+        + "Connection" + ":" + "Keep-Alive" + rn
+        + "Sec-Fetch-Dest" + ":" + "document" + rn
+        + "Sec-Fetch-Mode" + ":" + "navigate" + rn
+        + "Sec-Fetch-Site" + ":" + "none" + rn //"same-origin" + rn
+        + "Sec-Fetch-User" + ":" + "?1" + rn
+        + "Pragma" + ":" + "no-cache" + rn
+        + "Upgrade-Insecure-Requests" + ":" +"1" + rn
 ;
 
 

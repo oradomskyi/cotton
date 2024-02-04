@@ -21,7 +21,7 @@ def server_program():
         if not data:
             # if data is not received break
             continue
-        print("from connected user: " + str(data))
+        print("from connected user: >>" + str(data) + "<<")
         data = str("_hehe\n") #""#input(' -> ')
         conn.send(data.encode())  # send data to the client
 

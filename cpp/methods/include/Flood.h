@@ -2,16 +2,22 @@
 #define FLOOD_H
 
 #include "constants.h"
+#include "Target.h"
 #include "../../client/include/Client.h"
 
 namespace cotton{
 class Flood : public Client 
 {
+protected:
+    Target target_;
+
 public:
-    Flood(boost::asio::io_context& io_context, tcp::resolver::results_type& endpoints)
+    Flood(boost::asio::io_context& io_context, tcp::resolver::results_type& endpoints, const string& url)
     : Client(io_context, endpoints)
+    , target_(url)
     {};
 
+        
 };
 }
 #endif

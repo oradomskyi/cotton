@@ -1,6 +1,6 @@
 # include "../include/Client.h"
 
-// https://www.boost.org/doc/libs/1_78_0/doc/html/boost_asio/example/cpp11/timeouts/async_tcp_client.cpp
+// https://beta.boost.org/doc/libs/1_82_0/doc/html/boost_asio/example/cpp11/timeouts/async_tcp_client.cpp
 
 //
 // This class manages socket timeouts by applying the concept of a deadline.
@@ -61,11 +61,10 @@
 // The heartbeat actor sends a heartbeat (a message that consists of a single
 // newline character) every 10 seconds. In this example, no deadline is applied
 // to message sending.
-//
 
 namespace cotton {
 
-Client::Client(boost::asio::io_context& io_context, tcp::resolver::results_type& endpoints)
+Client::Client(boost::asio::io_context& io_context, tcp::resolver::results_type endpoints)
     : endpoints_(endpoints)
     , socket_(io_context)
     , deadline_(io_context)
@@ -92,18 +91,19 @@ Client::Client(boost::asio::io_context& io_context, tcp::resolver::results_type&
   // response to graceful termination or an unrecoverable error.
   void Client::stop()
   {
+    //std::cout << " stop() ";
     stopped_ = true;
     boost::system::error_code ignored_error;
     socket_.close(ignored_error);
     deadline_.cancel();
     heartbeat_timer_.cancel();
   }
-
+  
 void Client::start_connect(tcp::resolver::results_type::iterator endpoint_iter)
   {
     if (endpoint_iter != endpoints_.end())
     {
-      std::cout << "Trying " << endpoint_iter->endpoint() << "...\n";
+      //std::cout << "Trying " << endpoint_iter->endpoint() << "...\n";
 
       // Set a deadline for the connect operation.
       deadline_.expires_after(std::chrono::seconds(DEADLINE_CONNECT_SEC));
@@ -112,6 +112,7 @@ void Client::start_connect(tcp::resolver::results_type::iterator endpoint_iter)
       socket_.async_connect(endpoint_iter->endpoint(),
           std::bind(&Client::handle_connect,
             this, _1, endpoint_iter));
+
     }
     else
     {
@@ -131,7 +132,7 @@ void Client::start_connect(tcp::resolver::results_type::iterator endpoint_iter)
     // the timeout handler must have run first.
     if (!socket_.is_open())
     {
-      std::cout << "Connect timed out\n";
+      //std::cout << "Connect timed out\n";
 
       // Try the next available endpoint.
       start_connect(++endpoint_iter);
@@ -140,7 +141,7 @@ void Client::start_connect(tcp::resolver::results_type::iterator endpoint_iter)
     // Check if the connect operation failed before the deadline expired.
     else if (error)
     {
-      std::cout << "Connect error: " << error.message() << "\n";
+      //std::cout << "Connect error: " << error.message() << "\n";
 
       // We need to close the socket used in the previous connection attempt
       // before starting a new one.
@@ -153,7 +154,7 @@ void Client::start_connect(tcp::resolver::results_type::iterator endpoint_iter)
     // Otherwise we have successfully established a connection.
     else
     {
-      std::cout << "Connected to " << endpoint_iter->endpoint() << "\n";
+      //std::cout << "Connected to " << endpoint_iter->endpoint() << "\n";
 
       // Start the input actor.
       start_read();
@@ -195,7 +196,7 @@ void Client::start_connect(tcp::resolver::results_type::iterator endpoint_iter)
     }
     else
     {
-      std::cout << "Error on receive: " << error.message() << "\n";
+      //std::cout << "Error on receive: " << error.message() << "\n";
 
       stop();
     }
@@ -224,7 +225,7 @@ void Client::start_connect(tcp::resolver::results_type::iterator endpoint_iter)
     }
     else
     {
-      std::cout << "Error on heartbeat: " << error.message() << "\n";
+      //std::cout << "Error on heartbeat: " << error.message() << "\n";
 
       stop();
     }
