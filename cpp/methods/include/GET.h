@@ -10,9 +10,11 @@ public:
     GET(io_context& io_context, tcp::resolver::results_type& endpoints, const string& url)
     : TCPFlood(io_context, endpoints, url)
     {
-        DEADLINE_CONNECT_SEC = 100;
-        DEADLINE_READ_SEC = 30;
-        DEADLINE_WRITE_SEC = 100;
+        DEADLINE_CONNECT_MS_ =10000;
+        DEADLINE_READ_MS_=3;
+        DEADLINE_WRITE_MS_=1; 
+
+        //updateOutputBuffer("/", ""); // ? how ofter these has to be set ?
     };
 
 private:

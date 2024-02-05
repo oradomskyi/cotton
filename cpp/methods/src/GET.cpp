@@ -7,7 +7,7 @@ namespace cotton {
     void GET::start_read()
   {
     // Set a deadline for the read operation.
-    deadline_.expires_after(std::chrono::milliseconds(DEADLINE_READ_SEC));
+    deadline_.expires_after(std::chrono::milliseconds(DEADLINE_READ_MS_));
 
     // Start an asynchronous operation to read a newline-delimited message.
     boost::asio::async_read_until(socket_,
@@ -24,7 +24,7 @@ namespace cotton {
     {
       // Extract the newline-delimited message from the buffer.
       //std::string line(input_buffer_.substr(0, n - 1));
-      //input_buffer_.erase(0, n);
+      input_buffer_.erase(0, n); // why do we care?
 
       // Empty messages are heartbeats and so ignored.
       //if (!line.empty())
@@ -63,7 +63,7 @@ void GET::start_write()
     if (!error)
     {
       // Wait some seconds before sending the next heartbeat.
-      heartbeat_timer_.expires_after(std::chrono::microseconds(DEADLINE_WRITE_SEC));
+      heartbeat_timer_.expires_after(std::chrono::milliseconds(DEADLINE_WRITE_MS_));
       heartbeat_timer_.async_wait(std::bind(&GET::start_write, this));
     }
     else
@@ -76,11 +76,17 @@ void GET::start_write()
 
   void GET::updateOutputBuffer(const string& rawPathQS, const string& body)
   {
+
     updateDefaultHeader("1.2.3.4", "5.6.7.8", "9.10.11.12"); // ??? ip origin and raw_authority ??? 
     updateHeader(getDefaultHeader());
 	
 	updateRequest(type_, rawPathQS, body);
 
     output_buffer_ = getRequest();
+    
+    //preparePayload(type_, rawPathQS, "");
+
+    //output_buffer_ = payload_;
+    ///std::cout << output_buffer_; 
   }
 }

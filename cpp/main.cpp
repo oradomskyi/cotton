@@ -34,7 +34,7 @@ int main(int argc, char* argv[])
 
 //string upath2 = "http://john:pass@хост.домен:8000";
 
-    vector<string> urls = {"http://37.187.56.77", "https://httpbin.org/get", "http://127.0.0.1:65124", "http://127.0.0.1:65125"};
+    vector<string> urls = {"http://37.187.56.77", "https://api.restful-api.dev/objects", "https://httpbin.org/anything/", "http://127.0.0.1:65124", "http://127.0.0.1:65125"};
     
     //int i=0;
     for (int i = 0; i < 4; i+=2)
@@ -42,13 +42,15 @@ int main(int argc, char* argv[])
         resolver_results.push_back(std::move(r.resolve(argv[i+1], argv[i+2])));
     }
     
+ 
+
     vector<cotton::Client*> clients;
-    int n_threads_per_target = 2000000;
+    int n_threads_per_target = 1000000;
     clients.reserve(n_threads_per_target);
     int i_target = 0;
     for (int i = 0; i < n_threads_per_target; i++)    
     {   
-        
+ 
         clients.push_back(new cotton::GET(io_context, resolver_results[i_target], urls[0])); 
         //clients.push_back(new cotton::BYPASS(io_context, resolver_results[i], urls[1])); i++;
         //clients.push_back(new cotton::Client(io_context, resolver_results[i]));i++;
@@ -59,10 +61,19 @@ int main(int argc, char* argv[])
     {
         fiber f( std::ref(*c) );
         f.join();
+
+        //if (0 == i%10000)
+        //io_context.poll_one();
+
+         //   {
+         //       io_context.restart();
+         //       io_context.poll();
+         //   }
+
     }
     std::cout<< "joined" << std::endl;
     
-    io_context.run(); // main thread will halt here
+    io_context.run();//_for(std::chrono::milliseconds(100000)); // main thread will halt here
     
     std::cout<< "context.run() exit" << std::endl;
     

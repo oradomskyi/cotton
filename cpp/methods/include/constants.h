@@ -18,6 +18,7 @@ enum RequestType {
 	  GET
 	, RGET
 	, POST
+    , STRESS
     , BYPASS
 	, NONE
 };
@@ -35,6 +36,7 @@ static const unordered_map<RequestType, string> RequestTypeStr = {
 	  { RequestType::GET    , "GET"  }
 	, { RequestType::RGET   , "RGET" }
 	, { RequestType::POST   , "POST" }
+    , { RequestType::STRESS , "POST" }
     , { RequestType::BYPASS , "GET"  }
 	, { RequestType::NONE   , ""     }
 };
@@ -55,7 +57,7 @@ static const unordered_map<RequestType, string> RequestTypeStr = {
 */
 // several methods are using custom values for 'User-Agent' and 'Content-Length'
 // so there is a chance I will have to switch to a unordered_map<string, string>
-static const string TCPHeaderBase = 
+static const string TCP_HEADER_BASE = 
    string("Accept") + ": " + "*/*" + rn
         + "Accept-Encoding" + ":" + "gzip, deflate, br" + rn
         + "Accept-Language" + ":"+ "ru-RU,ru;q=0.9,en-US,en;q=0.7" + rn

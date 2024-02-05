@@ -5,7 +5,7 @@ namespace cotton {
 void BYPASS::start_read()
   {
     // Set a deadline for the read operation.
-    deadline_.expires_after(std::chrono::seconds(DEADLINE_READ_SEC));
+    deadline_.expires_after(std::chrono::seconds(DEADLINE_READ_MS_));
 
     try{
     // Start an asynchronous operation to read a newline-delimited message.
@@ -66,7 +66,7 @@ void BYPASS::start_write()
     if (!error)
     {
       // Wait some seconds before sending the next heartbeat.
-      heartbeat_timer_.expires_after(std::chrono::seconds(DEADLINE_WRITE_SEC));
+      heartbeat_timer_.expires_after(std::chrono::seconds(DEADLINE_WRITE_MS_));
       heartbeat_timer_.async_wait(std::bind(&BYPASS::start_write, this));
     }
     else
@@ -79,12 +79,12 @@ void BYPASS::start_write()
 
   void BYPASS::updateOutputBuffer(const string& rawPathQS, const string& body)
   {
-    updateDefaultHeader("1.2.3.4", "5.6.7.8", "9.10.11.12"); // ??? ip origin and raw_authority ??? 
-    updateHeader(getDefaultHeader());
+    //updateDefaultHeader("1.2.3.4", "5.6.7.8", "9.10.11.12"); // ??? ip origin and raw_authority ??? 
+    //updateHeader(getDefaultHeader());
 	
-	updateRequest(type_, rawPathQS, body);
+	//updateRequest(type_, rawPathQS, body);
 
-    output_buffer_ = getRequest();
+    //output_buffer_ = getRequest();
   }
 
 } // namespace

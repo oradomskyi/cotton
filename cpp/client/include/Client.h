@@ -16,6 +16,7 @@
 
 namespace cotton {
 
+using std::size_t;
 using std::string;
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -51,9 +52,9 @@ protected:
     
 protected:
   bool stopped_ = false;
-  int DEADLINE_CONNECT_SEC = 60;
-  int DEADLINE_WRITE_SEC = 10;
-  int DEADLINE_READ_SEC = 30;
+  int DEADLINE_CONNECT_MS_ = 60000; // 60 seconds
+  int DEADLINE_WRITE_MS_ = 10000; // 10 sec
+  int DEADLINE_READ_MS_ = 30000; // 30 sec 
   
   tcp::resolver::results_type endpoints_;
   tcp::socket socket_;

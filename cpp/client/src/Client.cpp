@@ -1,4 +1,5 @@
 # include "../include/Client.h"
+#include <chrono>
 
 // https://beta.boost.org/doc/libs/1_82_0/doc/html/boost_asio/example/cpp11/timeouts/async_tcp_client.cpp
 
@@ -106,7 +107,7 @@ void Client::start_connect(tcp::resolver::results_type::iterator endpoint_iter)
       //std::cout << "Trying " << endpoint_iter->endpoint() << "...\n";
 
       // Set a deadline for the connect operation.
-      deadline_.expires_after(std::chrono::seconds(DEADLINE_CONNECT_SEC));
+      deadline_.expires_after(std::chrono::milliseconds(DEADLINE_CONNECT_MS_));
 
       // Start the asynchronous connect operation.
       socket_.async_connect(endpoint_iter->endpoint(),
@@ -167,7 +168,7 @@ void Client::start_connect(tcp::resolver::results_type::iterator endpoint_iter)
   void Client::start_read()
   {
     // Set a deadline for the read operation.
-    deadline_.expires_after(std::chrono::seconds(DEADLINE_READ_SEC));
+    deadline_.expires_after(std::chrono::milliseconds(DEADLINE_READ_MS_));
 
     // Start an asynchronous operation to read a newline-delimited message.
     boost::asio::async_read_until(socket_,
@@ -197,7 +198,6 @@ void Client::start_connect(tcp::resolver::results_type::iterator endpoint_iter)
     else
     {
       //std::cout << "Error on receive: " << error.message() << "\n";
-
       stop();
     }
   }
@@ -220,13 +220,12 @@ void Client::start_connect(tcp::resolver::results_type::iterator endpoint_iter)
     if (!error)
     {
       // Wait some seconds before sending the next heartbeat.
-      heartbeat_timer_.expires_after(std::chrono::seconds(DEADLINE_WRITE_SEC));
+      heartbeat_timer_.expires_after(std::chrono::milliseconds(DEADLINE_WRITE_MS_));
       heartbeat_timer_.async_wait(std::bind(&Client::start_write, this));
     }
     else
     {
       //std::cout << "Error on heartbeat: " << error.message() << "\n";
-
       stop();
     }
   }
@@ -255,9 +254,9 @@ void Client::start_connect(tcp::resolver::results_type::iterator endpoint_iter)
     deadline_.async_wait(std::bind(&Client::check_deadline, this));
   }
 
-void Client::operator()()//tcp::resolver::results_type endpoints)
+void Client::operator()()
 {
-    start();//endpoints);
+    start();
 }
 
 } // cotton

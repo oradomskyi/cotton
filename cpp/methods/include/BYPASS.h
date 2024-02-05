@@ -10,7 +10,7 @@ public:
     BYPASS(io_context& io_context, tcp::resolver::results_type& endpoints, const string& url)
     : TCPFlood(io_context, endpoints, url)
     {
-        DEADLINE_WRITE_SEC = 1;
+        DEADLINE_WRITE_MS_=100;
     };
 
 private:

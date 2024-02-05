@@ -3,6 +3,7 @@
 
 #include "GET.h"
 #include "BYPASS.h"
+#include "STRESS.h"
 //#include "UDP.h"
 
 #endif
